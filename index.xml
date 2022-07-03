@@ -6,22 +6,22 @@
     <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</lastBuildDate>
       <atom:link href="https://blog.ther.cool/index.xml" rel="self" type="application/rss+xml" />
     <item>
-  <title>MySQL varchar 的最大长度是多少？</title>
-  <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91/</link>
+  <title>MySQL varchar 的最大长度</title>
+  <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</link>
   <pubDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</pubDate>
   <author>Author</author>
-  <guid>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91/</guid>
+  <guid>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</guid>
   <description><![CDATA[备注：全文示例皆在 8.0.17 版本下进行。
 在MySQL官方定义中，常用的 COMPACT、DYNAMIC行模式下，varchar 的最大长度并不是固定数值，取决于以下限制：
 行长度限制； 编码长度限制； 存储限制。 行长度限制 MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：
 1118 - Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs 编码长度限制 每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：
 字符集 每个字符占用存储空间（单位：字节） latin1 1 GBK 2 UTF8 3 UTF8MB4 4 存储限制 根据限制 1，每行最多能存储 65535 字节的数据，这包括：]]></description>
 </item><item>
-  <title>博客的诞生</title>
-  <link>https://blog.ther.cool/posts/first/</link>
+  <title>测试文档</title>
+  <link>https://blog.ther.cool/posts/%E6%B5%8B%E8%AF%95/</link>
   <pubDate>Sat, 06 Nov 2021 17:30:31 &#43;0800</pubDate>
   <author>Author</author>
-  <guid>https://blog.ther.cool/posts/first/</guid>
+  <guid>https://blog.ther.cool/posts/%E6%B5%8B%E8%AF%95/</guid>
   <description><![CDATA[测试一级标题 import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, my blog!&#34;) } 网站地址 https://blog.ther.cool]]></description>
 </item><item>
   <title>秒杀系统的设计</title>
@@ -29,7 +29,7 @@
   <pubDate>Sat, 21 Nov 2020 22:26:24 &#43;0800</pubDate>
   <author>Author</author>
   <guid>https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
-  <description><![CDATA[设计秒杀系统 秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
+  <description><![CDATA[秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
 秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
 并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
 并发写的处理原则也一样，它要求我们在数据库层面独立出来一个库，做特殊的处理。
@@ -46,6 +46,21 @@
 请求数要尽量少 用户请求的页面返回后，浏览器渲染这个页面还要包含其他的额外请求，比如说，这个页面依赖的 CSS / JavaScript、图片，以及 Ajax 请求等等都定义为“额外请求”，这些额外请求应该尽量少。因为浏览器每发出一个请求都多少会有一些消耗，例如建立连接要做三次握手，有的时候有页面依赖或者连接数限制，一些请求（例如 JavaScript）还需要串行加载等。另外，如果不同请求的域名不一样的话，还涉及这些域名的 DNS 解析，可能会耗时更久。所以减少请求数可以显著减少以上这些因素导致的资源消耗。
 例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
 https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
-路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。]]></description>
+路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
+通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。]]></description>
+</item><item>
+  <title>赛马问题</title>
+  <link>https://blog.ther.cool/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/</link>
+  <pubDate>Thu, 28 May 2020 22:50:42 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/</guid>
+  <description><![CDATA[问题 有 64 匹马，速度都不同，但每匹马的速度都是定值。每次只能 8 匹马进行比赛，每次比赛只能得到 8 匹马之间的快慢程度，而不是具体速度，即每赛一场最多只能知道 8 匹马的相对快慢。请问最少要比多少次才能获得最快的前 4 匹马 ？
+解答 1.首先把 64 匹马随机分成 8 组，分别进行 8 次比赛，记录成绩。
+2.再将每组第 1 名集合起来进行 1 次比赛。这是第 9 次比赛。
+3.留下第 9 次比赛前四名的马所在的组。因为对于后 4 名的马所在的组来说，没有一匹有机会进入前四。
+4.剩下的 4 组按照每组第 1 名在第 9 次比赛的成绩排序，这样按照判断原则，只剩下10匹马（如下）可能进入前 4，而第 1 组的第 1 名肯定是跑最快的马。
+第一组： 1 2 3 4 第二组： 1 2 3 第三组： 1 2 第四组： 1
+这样问题就变成 9 匹马找出前 3 快的。情况好的话跑 1 次可以得到，不行的话 2 次。
+第一组： 2 3 4 第二组： 1 2 3 第三组： 1 2 第四组： 1]]></description>
 </item></channel>
 </rss>
