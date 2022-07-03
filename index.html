@@ -1,9 +1,159 @@
-<!doctype html><html lang=en-us><head><title>Ther 的博客</title><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content><meta name=generator content="Hugo 0.74.2"><meta name=ROBOTS content="NOINDEX, NOFOLLOW"><link rel=stylesheet href=/css/style.css><link rel="shortcut icon" href=/images/favicon.ico type=image/x-icon><link href=/index.xml rel=alternate type=application/rss+xml title="Ther 的博客"><link href=/index.xml rel=feed type=application/rss+xml title="Ther 的博客"></head><body><nav class=navigation><a href=/posts>Archive</a>
-<a href=/tags>Tags</a>
-<a href=/about>About</a></nav><main class=main><header class=profile><img class=avatar alt=avatar src=/images/avatar.png><h1>Ther 的博客</h1></header><div id=list-page><section class=item><div><h1 class=title><a href=/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91/>MySQL varchar 的最大长度是多少？</a></h1><div class=date><time datetime="2022-02-03 19:17:31 +0800 +0800">Feb 3, 2022</time></div></div><div class=summary>备注：全文示例皆在 8.0.17 版本下进行。
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+	<meta name="generator" content="Hugo 0.101.0" />
+    
+      <meta name="theme" content='FixIt v0.2.15-RC'>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <title>Ther 的博客</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="" />
+<meta name="keywords" content="" /><meta itemprop="name" content="Ther 的博客">
+<meta itemprop="description" content=""><meta property="og:title" content="Ther 的博客" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.ther.cool/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Ther 的博客"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="Ther 的博客">
+<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/" /><link rel="alternate" href="/index.xml" type="application/rss+xml" title="Ther 的博客">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="Ther 的博客"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "https:\/\/blog.ther.cool\/","inLanguage": "en-us","name": "Ther 的博客"
+  }
+  </script></head>
+  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+    <nav>
+      <ul class="menu"><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header>
+<div class="search-dropdown desktop">
+  <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+  <div id="search-dropdown-mobile"></div>
+</div>
+<main class="container" page-style="normal"><div class="page home" posts><div class="home-profile"></div>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+    <a href="/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91/">MySQL varchar 的最大长度是多少？</a>
+  </h1><div class="post-meta"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>&nbsp;<span class="post-publish" title='2022-02-03 19:17:31'>published on <time datetime="2022-02-03">2022-02-03</time></span>&nbsp;<span class="post-category">included in <a href="/categories/mysql/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;MySQL</a></span></div><div class="content">备注：全文示例皆在 8.0.17 版本下进行。
 在MySQL官方定义中，常用的 COMPACT、DYNAMIC行模式下，varchar 的最大长度并不是固定数值，取决于以下限制：
-行长度限制； 编码长度限制； 存储限制。 行长度限制 🔗MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：
-1118 - Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs 编码长度限制 🔗每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：
-字符集 每个字符占用存储空间（单位：字节） latin1 1 GBK 2 UTF8 3 UTF8MB4 4 存储限制 🔗根据限制 1，每行最多能存储 65535 字节的数据，这包括：</div></section><section class=item><div><h1 class=title><a href=/about/>About</a></h1><div class=date><time datetime="2021-11-21 14:56:36 +0800 +0800">Nov 21, 2021</time></div></div><div class=summary>about 🔗This is about page.</div></section><section class=item><div><h1 class=title><a href=/first/>博客的诞生</a></h1><div class=date><time datetime="2021-11-06 17:30:31 +0800 +0800">Nov 6, 2021</time></div></div><div class=summary>测试一级标题 🔗import "fmt" func main() { fmt.Println("Hello, my blog!") } 网站地址 https://blog.ther.cool</div></section></div></main><footer id=footer><div class=copyright>© Copyright
-2022
-<span class=split><svg fill="#bbb" width="15" height="15" id="heart-15" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><path d="M13.91 6.75c-1.17 2.25-4.3 5.31-6.07 6.94-.1903.1718-.4797.1718-.67.0C5.39 12.06 2.26 9 1.09 6.75-1.48 1.8 5-1.5 7.5 3.45 10-1.5 16.48 1.8 13.91 6.75z"/></svg></span></div><div class=powerby>Powered by <a href=http://www.gohugo.io/>Hugo</a> Theme By <a href=https://github.com/nodejh/hugo-theme-cactus-plus>nodejh</a></div></footer></body></html>
+行长度限制； 编码长度限制； 存储限制。 行长度限制 MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：
+1118 - Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs 编码长度限制 每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：
+字符集 每个字符占用存储空间（单位：字节） latin1 1 GBK 2 UTF8 3 UTF8MB4 4 存储限制 根据限制 1，每行最多能存储 65535 字节的数据，这包括：</div><div class="post-footer">
+    <a href="/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6%E6%98%AF%E5%A4%9A%E5%B0%91/">Read More</a><div class="post-tags">
+        <i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/mysql/">MySQL</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+    <a href="/posts/first/">博客的诞生</a>
+  </h1><div class="post-meta"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>&nbsp;<span class="post-publish" title='2021-11-06 17:30:31'>published on <time datetime="2021-11-06">2021-11-06</time></span></div><div class="content">测试一级标题 import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, my blog!&#34;) } 网站地址 https://blog.ther.cool</div><div class="post-footer">
+    <a href="/posts/first/">Read More</a></div>
+</article></div></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.101.0">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div></div>
+  </footer></div><div class="widgets">
+  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+      <i class="fa-solid fa-arrow-up fa-fw"></i>
+    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+      <i class="fa-solid fa-comment fa-fw"></i>
+    </a>
+  </div><div id="mask"></div>
+</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+</html>
