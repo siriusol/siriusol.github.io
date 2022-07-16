@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <title>评论系统架构设计 - Ther 的博客</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="" />
+<meta name="keywords" content="评论" /><meta itemprop="name" content="评论系统架构设计">
+<meta itemprop="description" content=""><meta itemprop="datePublished" content="2022-07-16T22:05:41+08:00" />
+<meta itemprop="dateModified" content="2022-07-16T22:05:41+08:00" />
+<meta itemprop="wordCount" content="167">
+<meta itemprop="keywords" content="评论," /><meta property="og:title" content="评论系统架构设计" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-16T22:05:41+08:00" />
+<meta property="article:modified_time" content="2022-07-16T22:05:41+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="评论系统架构设计"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="Ther 的博客">
+<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" /><link rel="prev" href="https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "评论系统架构设计",
+    "inLanguage": "en-us",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/"
+    },"genre": "posts","keywords": "评论","wordcount":  167 ,
+    "url": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/","datePublished": "2022-07-16T22:05:41+08:00","dateModified": "2022-07-16T22:05:41+08:00","publisher": {
+      "@type": "Organization",
+      "name": "Author"},"author": {
+        "@type": "Person",
+        "name": "Author"
+      },"description": ""
+  }
+  </script></head>
+  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+    <nav>
+      <ul class="menu"><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header>
+<div class="search-dropdown desktop">
+  <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+  <div id="search-dropdown-mobile"></div>
+</div>
+<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+  </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">评论系统架构设计</h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>
+          <span class="post-category">included in <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;系统设计</a></span></div>
+      <div class="post-meta-line"><span title=2022-07-16&#32;22:05:41>
+            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-07-16" >2022-07-16</time>
+          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;167 words&nbsp;
+        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+    </div><div class="details toc" id="toc-static" kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#功能模块">功能模块</a></li>
+    <li><a href="#架构设计">架构设计</a>
+      <ul>
+        <li><a href="#comment-service">comment-service</a></li>
+        <li><a href="#comment-admin">comment-admin</a></li>
+        <li><a href="#comment">comment</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h2 id="功能模块">功能模块</h2>
+<ul>
+<li>
+<p>发布评论: 支持回复楼层、楼中楼。</p>
+</li>
+<li>
+<p>读取评论: 按照时间、热度排序。</p>
+</li>
+<li>
+<p>删除评论: 用户删除、作者删除。</p>
+</li>
+<li>
+<p>管理评论: 作者置顶、后台运营管理**(**搜索、删除、审核等)。</p>
+</li>
+</ul>
+<h2 id="架构设计">架构设计</h2>
+<p>架构设计等同于数据设计，梳理清楚数据的走向和逻辑。尽量<strong>避免环形依赖</strong>、<strong>数据双向请求</strong>等。</p>
+<p>概览图如下：</p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png"
+    data-srcset="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png, https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png 1.5x, https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png"
+    title="image-20220716200753155" /></p>
+<ul>
+<li>BFF: comment</li>
+</ul>
+<p>复杂评论业务的服务编排，比如访问账号服务进行等级判定，同时需要在 BFF 面向移动端/WEB场景来设计 API，这一层抽象把评论的本身的内容列表处理**(<strong>加载、分页、排序等</strong>)**进行了隔离，关注在业务平台化逻辑上。</p>
+<ul>
+<li>Service: comment-service</li>
+</ul>
+<p>服务层，去平台业务的逻辑，专注在评论功能的 API 实现上，比如发布、读取、删除等，关注在稳定性、可用性上，这样让上游可以灵活组织逻辑把基础能力和业务能力剥离。</p>
+<ul>
+<li>Job: comment-job</li>
+</ul>
+<p>消息队列的最大用途是削峰处理。</p>
+<ul>
+<li>Admin: comment-admin</li>
+</ul>
+<p>管理平台，按照安全等级划分服务，尤其划分运营平台，它们会共享服务层的存储层(MySQL、Redis)。运营体系的数据大量都是检索，使用 Canal 将 MySQL 中的数据同步到 ES 中，整个数据的展示都是通过 ES，再通过业务主键更新业务数据层，这样运营端的查询压力就下方给了独立的 fulltext search 系统。</p>
+<ul>
+<li>Dependency: account-service、filter-service</li>
+</ul>
+<p>评论服务还会依赖一些外部 gRPC 服务，统一的平台业务逻辑在 comment BFF 层收敛，这里 account-service 主要是账号服务，filter-service 是敏感词过滤服务。</p>
+<h3 id="comment-service">comment-service</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png"
+    data-srcset="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png, https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png 1.5x, https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png"
+    title="image-20220716201722693" /></p>
+<p>comment-service，专注在评论数据处理(认真想下 Separation of Concerns)。</p>
+<p>最开始 comment-service 和 comment 是一层，业务和功能耦合在一起，非常不利于迭代，当然在设计层面可以考虑目录结构进行拆分，但是架构层次来说，迭代隔离也是好的。</p>
+<h4 id="读的核心逻辑">读的核心逻辑</h4>
+<p><strong>Cache-Aside</strong> 模式，先读取缓存，再读取存储。早期 cache rebuild 是做到服务里的，对于重建逻辑，一般会使用 read ahead 的思路，即预读，用户访问了第一页，很有可能访问第二页，所以缓存会超前加载，避免频繁 cache miss。但是当缓存抖动时，这种做法特别容易引起集群 thundering herd 现象，大量的请求会触发 cache rebuild，因为使用了预加载，容易导致加载大量数据到服务中，最终导致 OOM。</p>
+<p>所以回源的逻辑使用了消息队列来进行异步化。当缓存 miss 时，对于当前请求只返回 MySql 中部分数据即止，同时向 KafKa 中发送(回源)指令消息。</p>
+<h4 id="写的核心逻辑">写的核心逻辑</h4>
+<p>写和读相比较，写可以认为是透穿到存储层的，系统的瓶颈往往就来自于存储层，或者说是有状态层。对于写的设计上，可以认为刚发布的评论有极短的延迟(通常小于几 ms)对用户可见是可接受的，把对存储的直接冲击下放到消息队列，按照<strong>消息反压</strong>的思路，即如果存储 latency 升高，消费能力就下降，自然消息容易堆积，系统始终以最大化方式消费。</p>
+<p>Kafka 存在 partition 概念，可以认为是物理上的一个小队列，一个 topic 由一组 partition 组成，所以 Kafka 的吞吐模型理解为：全局并行，局部串行的生产消费方式。对于入队的消息，可以按照 <code>hash(comment_subject) % N(partitions)</code> 的方式进行分发。那么某个 partition 中的评论主题的数据一定都在一起，这样方便进行串行消费。在更新时，先更新 DB，再更新缓存。</p>
+<p>同样的，处理回源消息也是类似的思路。接收到消息后，可以先判断下缓存是否已经 rebuild，如果是则直接返回消息处理成功。</p>
+<h3 id="comment-admin">comment-admin</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png"
+    data-srcset="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png, https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png 1.5x, https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png"
+    title="image-20220716204038573" /></p>
+<p>MySQL binlog 中的数据被 Canal 中间件流式消费，获取到业务的原始 CUD 操作(没有Retrive)，需要回放写入到 es 中，但是 es 中的数据最终是面向运营体系提供服务能力，需要检索的数据维度比较多，在写入 es 前需要做一个异构的 joiner，把单表变宽，预处理好 join 逻辑，然后写入到 es中。</p>
+<p>一般来说，运营后台的检索条件都是组合的，使用 es 的好处是避免依赖 mysql 来做多条件组合检索，同时 mysql 毕竟是 OLTP 面向线上联机事务处理的。通过冗余数据的方式，将多条件组合检索需求通过其他引擎来实现。</p>
+<p>此外 es 一般会存储检索、展示 primary key 等数据，当操作编辑的时候，找到记录的 primary key，交由 comment-admin 进行运营侧的 CRUD 操作。写操作对 DB 进行操作，经由 Canal 同步至 ES，而不是直接操作写 ES。</p>
+<h3 id="comment">comment</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png"
+    data-srcset="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png, https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png 1.5x, https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png"
+    title="image-20220716204817745" /></p>
+<p>comment 作为 BFF，是面向端、平台、业务组合的服务。所以平台扩展的能力都在 comment 服务实现，方便以统一的接口形式提供平台化的能力。</p>
+<ul>
+<li>
+<p>依赖其他 gRPC 服务，整合统一平台测的逻辑(比如发布评论用户等级限定)。</p>
+</li>
+<li>
+<p>直接向端上提供接口，提供数据的读写接口，甚至可以整合端上，提供统一的端上 SDK。</p>
+</li>
+<li>
+<p>需要在非核心依赖的 gRPC 服务不稳定时进行降级。</p>
+</li>
+</ul></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-07-16&#32;22:05:41>Updated on 2022-07-16</span>
+      </div>
+      <div class="post-info-license "></div>
+    </div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E8%AF%84%E8%AE%BA/">评论</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/" class="prev" rel="prev" title="MySQL varchar 的最大长度"><i class="fa-solid fa-angle-left fa-fw"></i>MySQL varchar 的最大长度</a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.101.0">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div></div>
+  </footer></div><div class="widgets">
+  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+      <i class="fa-solid fa-arrow-up fa-fw"></i>
+    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+      <i class="fa-solid fa-comment fa-fw"></i>
+    </a>
+  </div><div id="mask"></div>
+</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+</html>

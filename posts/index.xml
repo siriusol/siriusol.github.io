@@ -3,7 +3,14 @@
     <title>All Posts - Ther 的博客</title>
     <link>https://blog.ther.cool/posts/</link>
     <description>All Posts | Ther 的博客</description>
-    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/posts/" rel="self" type="application/rss+xml" /><item>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 16 Jul 2022 22:05:41 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>评论系统架构设计</title>
+  <link>https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
+  <pubDate>Sat, 16 Jul 2022 22:05:41 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
+  <description><![CDATA[]]></description>
+</item><item>
   <title>MySQL varchar 的最大长度</title>
   <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</link>
   <pubDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</pubDate>
