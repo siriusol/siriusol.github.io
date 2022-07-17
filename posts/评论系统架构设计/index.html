@@ -12,7 +12,7 @@
 <meta name="keywords" content="评论" /><meta itemprop="name" content="评论系统架构设计">
 <meta itemprop="description" content=""><meta itemprop="datePublished" content="2022-07-16T22:05:41+08:00" />
 <meta itemprop="dateModified" content="2022-07-16T22:05:41+08:00" />
-<meta itemprop="wordCount" content="167">
+<meta itemprop="wordCount" content="368">
 <meta itemprop="keywords" content="评论," /><meta property="og:title" content="评论系统架构设计" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="article" />
@@ -35,7 +35,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/"
-    },"genre": "posts","keywords": "评论","wordcount":  167 ,
+    },"genre": "posts","keywords": "评论","wordcount":  368 ,
     "url": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/","datePublished": "2022-07-16T22:05:41+08:00","dateModified": "2022-07-16T22:05:41+08:00","publisher": {
       "@type": "Organization",
       "name": "Author"},"author": {
@@ -155,8 +155,8 @@
           <span class="post-category">included in <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;系统设计</a></span></div>
       <div class="post-meta-line"><span title=2022-07-16&#32;22:05:41>
             <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-07-16" >2022-07-16</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;167 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;368 words&nbsp;
+        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
     </div><div class="details toc" id="toc-static" kept="false">
         <div class="details-summary toc-title">
           <span>Contents</span>
@@ -170,6 +170,18 @@
         <li><a href="#comment-service">comment-service</a></li>
         <li><a href="#comment-admin">comment-admin</a></li>
         <li><a href="#comment">comment</a></li>
+      </ul>
+    </li>
+    <li><a href="#存储设计">存储设计</a>
+      <ul>
+        <li><a href="#数据库设计">数据库设计</a></li>
+        <li><a href="#缓存设计">缓存设计</a></li>
+      </ul>
+    </li>
+    <li><a href="#可用性设计">可用性设计</a>
+      <ul>
+        <li><a href="#singleflight">Singleflight</a></li>
+        <li><a href="#热点">热点</a></li>
       </ul>
     </li>
   </ul>
@@ -191,7 +203,7 @@
 <p>删除评论: 用户删除、作者删除。</p>
 </li>
 <li>
-<p>管理评论: 作者置顶、后台运营管理**(**搜索、删除、审核等)。</p>
+<p>管理评论: 作者置顶、后台运营管理(搜索、删除、审核等)。</p>
 </li>
 </ul>
 <h2 id="架构设计">架构设计</h2>
@@ -208,7 +220,7 @@
 <ul>
 <li>BFF: comment</li>
 </ul>
-<p>复杂评论业务的服务编排，比如访问账号服务进行等级判定，同时需要在 BFF 面向移动端/WEB场景来设计 API，这一层抽象把评论的本身的内容列表处理**(<strong>加载、分页、排序等</strong>)**进行了隔离，关注在业务平台化逻辑上。</p>
+<p>复杂评论业务的服务编排，比如访问账号服务进行等级判定，同时需要在 BFF 面向移动端/WEB场景来设计 API，这一层抽象把评论的本身的内容列表处理(加载、分页、排序等)进行了隔离，关注在业务平台化逻辑上。</p>
 <ul>
 <li>Service: comment-service</li>
 </ul>
@@ -275,7 +287,84 @@
 <li>
 <p>需要在非核心依赖的 gRPC 服务不稳定时进行降级。</p>
 </li>
-</ul></div><div class="post-footer" id="post-footer">
+</ul>
+<h2 id="存储设计">存储设计</h2>
+<h3 id="数据库设计">数据库设计</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png"
+    data-srcset="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png, https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png 1.5x, https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png"
+    title="image-20220716221909268" /></p>
+<h4 id="数据写入">数据写入</h4>
+<p>事务更新 comment_subject，comment_index，comment_content 三张表，其中 content 属于非强制需要一致性考虑的。可以先写入 content，之后事务更新其他表。即便 content 先成功，后续失败，也仅存在一条 ghost 数据。</p>
+<h4 id="数据读取">数据读取</h4>
+<p>基于 obj_id + obj_type 在 comment_index 表找到评论列表，WHERE root = 0 ORDER BY floor。之后根据 comment_index 的 id 字段捞出 comment_content 的评论内容。对于二级的子楼层，WHERE parent/root IN (id&hellip;)。</p>
+<p>因为产品形态上只存在二级列表，因此只需要迭代查询两次即可。对于嵌套层次多的，产品上，可以通过二次点击支持。</p>
+<p>Tips: 是不是可以使用 Graph 存储？DGraph、HugeGraph 类似的图存储思路。</p>
+<h4 id="索引与内容分离">索引与内容分离</h4>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="C:%5cUsers%5cTher%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20220717182945045.png"
+    data-srcset="C:%5cUsers%5cTher%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20220717182945045.png, C:%5cUsers%5cTher%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20220717182945045.png 1.5x, C:%5cUsers%5cTher%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20220717182945045.png 2x"
+    data-sizes="auto"
+    alt="C:\Users\Ther\AppData\Roaming\Typora\typora-user-images\image-20220717182945045.png"
+    title="image-20220717182945045" /></p>
+<p>comment_index: 评论楼层的索引组织表，实际并不包含内容。
+comment_content: 评论内容的表，包含评论的具体内容。其中 comment_index 的 id 字段和 comment_content 是 1 对 1 的关系，这里面包含几种设计思想。</p>
+<p>表都有主键，即 cluster index，是物理组织形式存放的，comment_content 没有 id，是为了减少一次二级索引查找，直接基于主键检索，同时 comment_id 在写入要尽可能的顺序自增。</p>
+<p>索引、内容分离，方便 MySQL datapage 缓存更多的 row ，如果和 context 耦合，会导致更大的  IO。长远来看 content 信息可以直接使用 KV storage 存储。</p>
+<h3 id="缓存设计">缓存设计</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png"
+    data-srcset="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png, https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png 1.5x, https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png"
+    title="image-20220717225941315" /></p>
+<p>comment_subject_cache: 对应主题的缓存，value 使用 protobuf 序列化的方式存入。早期使用 memcache 来进行缓存，因为 Redis 早期单线程模型，吞吐能力不高。</p>
+<p>comment_index_cache: 使用 Redis sortedset 进行索引的缓存，索引即数据的组织顺序，而非数据内容。参考过百度的贴吧，他们使用自己研发的拉链存储来组织索引，我认为 mysql 作为主力存储，利用 redis 来做加速完全足够，因为 cache miss 的构建，我们前面讲过使用 kafka 的消费者中处理，预加载少量数据，通过增量加载的方式逐渐预热填充缓存，而 redis sortedset skiplist 的实现，可以做到 <code>O(logN) + O(M)</code> 的时间复杂度，效率很高。</p>
+<p>sorted set 是要增量追加的，因此必须判定 key 存在，才能 zdd。</p>
+<blockquote>
+<p>为什么判定 key 存在后才能 add？</p>
+<p>若直接 add，则可能 key 已不存在，结果就是只 add 了要追加的一部分。</p>
+</blockquote>
+<p>comment_content_cache: 对应评论内容数据，使用 protobuf 序列化的方式存入。类似的我们早期使用 memcache 进行缓存。</p>
+<p>增量加载 + lazy 加载。</p>
+<h2 id="可用性设计">可用性设计</h2>
+<h3 id="singleflight">Singleflight</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png"
+    data-srcset="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png, https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png 1.5x, https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png"
+    title="image-20220717230755891" /></p>
+<p>对于热门的主题，如果存在缓存穿透的情况，会导致大量的同进程、跨进程的数据回源到存储层，可能会引起存储过载的情况，如何只交给同进程内，一个人去做加载存储？</p>
+<p>使用归并回源的思路:</p>
+<p><code>https://pkg.go.dev/golang.org/x/sync/singleflight</code></p>
+<p>同进程只交给一个人去获取 mysql 数据，然后批量返回。同时这个 lease owner 投递一个 kafka 消息，做 index cache 的 recovery 操作。这样可以大大减少 mysql 的压力，以及大量透穿导致的密集写 kafka 的问题。</p>
+<p>更进一步的，后续连续的请求，仍然可能会短时 cache miss，我们可以在进程内设置一个 short-lived flag，标记最近有一个人投递了 cache rebuild 的消息，直接 drop。</p>
+<p>为什么我们不用分布式锁之类的思路？</p>
+<blockquote>
+<p>分布式锁不好做，且太重。</p>
+</blockquote>
+<h3 id="热点">热点</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png"
+    data-srcset="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png, https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png 1.5x, https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png"
+    title="image-20220717231201889" /></p>
+<p>流量热点是因为突然热门的主题，被高频次的访问，因为底层的 cache 设计，一般是按照主题 key 进行一致性 hash 来进行分片，但是热点 key 一定命中某一个节点，这时候 remote cache 可能会变为瓶颈，因此做 cache 的升级 local cache 是有必要的，我们一般使用单进程自适应发现热点的思路，附加一个短时的 ttl local cache，可以在进程内吞掉大量的读请求。</p>
+<p>在内存中使用 hashmap 统计每个 key 的访问频次，这里可以使用滑动窗口统计，即每个窗口中，维护一个 hashmap，之后统计所有未过去的 bucket，汇总所有 key 的数据。之后使用小堆计算 TopK 的数据，自动进行热点识别。</p></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
