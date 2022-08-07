@@ -1,9 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
-    <title>MySQL - Tag - Ther 的博客</title>
-    <link>https://blog.ther.cool/tags/mysql/</link>
-    <description>MySQL - Tag - Ther 的博客</description>
-    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 07 Aug 2022 18:18:27 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/tags/mysql/" rel="self" type="application/rss+xml" /><item>
+    <title>学习笔记 - Category - Ther 的博客</title>
+    <link>https://blog.ther.cool/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+    <description>学习笔记 - Category - Ther 的博客</description>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 07 Aug 2022 18:18:27 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
   <title>《姜承尧的MySQL实战宝典》学习笔记</title>
   <link>https://blog.ther.cool/posts/%E5%A7%9C%E6%89%BF%E5%B0%A7%E7%9A%84mysql%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
   <pubDate>Sun, 07 Aug 2022 18:18:27 &#43;0800</pubDate>
@@ -15,16 +15,5 @@
 整型结合属性 auto_increment，可以实现自增功能，但在表结构设计时用自增做主键，要注意以下两点：
 用 BIGINT 做主键，而不是 INT；
 自增值并不持久化，可能会有回溯现象（MySQL 8.0 版本前）。]]></description>
-</item><item>
-  <title>MySQL varchar 的最大长度</title>
-  <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</link>
-  <pubDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</pubDate>
-  <author>Author</author>
-  <guid>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</guid>
-  <description><![CDATA[备注：全文示例皆在 8.0.17 版本下进行。
-在MySQL官方定义中，常用的 COMPACT、DYNAMIC行模式下，varchar 的最大长度并不是固定数值，取决于以下限制：
-行长度限制； 编码长度限制； 存储限制。 行长度限制 MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：
-1118 - Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs 编码长度限制 每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：
-字符集 每个字符占用存储空间（单位：字节） latin1 1 GBK 2 UTF8 3 UTF8MB4 4 存储限制 根据限制 1，每行最多能存储 65535 字节的数据，这包括：]]></description>
 </item></channel>
 </rss>

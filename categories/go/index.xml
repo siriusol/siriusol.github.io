@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>go - Category - Ther 的博客</title>
+    <link>https://blog.ther.cool/categories/go/</link>
+    <description>go - Category - Ther 的博客</description>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 09 Jul 2022 22:33:20 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/categories/go/" rel="self" type="application/rss+xml" /><item>
+  <title>Go 并发编程 内存模型</title>
+  <link>https://blog.ther.cool/posts/go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</link>
+  <pubDate>Sat, 09 Jul 2022 22:33:20 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</guid>
+  <description><![CDATA[]]></description>
+</item></channel>
+</rss>
