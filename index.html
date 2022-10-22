@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.101.0" />
+	<meta name="generator" content="Hugo 0.104.3" />
     
       <meta name="theme" content='FixIt v0.2.15-RC'>
     
@@ -131,15 +131,24 @@
 </div>
 <main class="container" page-style="normal"><div class="page home" posts><div class="home-profile"></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-    <a href="/posts/%E5%A7%9C%E6%89%BF%E5%B0%A7%E7%9A%84mysql%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《姜承尧的MySQL实战宝典》学习笔记</a>
+    <a href="/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/">定时任务框架设计</a>
   </h1><div class="post-meta"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>&nbsp;<span class="post-publish" title='2022-08-07 18:18:27'>published on <time datetime="2022-08-07">2022-08-07</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;学习笔记</a></span></div><div class="content">1. 表结构设计篇-数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
-类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。
-整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。
-整型结合属性 auto_increment，可以实现自增功能，但在表结构设计时用自增做主键，要注意以下两点：
-用 BIGINT 做主键，而不是 INT；
-自增值并不持久化，可能会有回溯现象（MySQL 8.0 版本前）。</div><div class="post-footer">
-    <a href="/posts/%E5%A7%9C%E6%89%BF%E5%B0%A7%E7%9A%84mysql%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Read More</a><div class="post-tags">
+      </span></span>&nbsp;<span class="post-publish" title='2022-09-18 20:52:42'>published on <time datetime="2022-09-18">2022-09-18</time></span>&nbsp;<span class="post-category">included in <a href="/categories/draft/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;draft</a></span></div><div class="content">定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器</div><div class="post-footer">
+    <a href="/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/">Read More</a><div class="post-tags">
+        <i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/draft/">draft</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+    <a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">MySQL 数据类型</a>
+  </h1><div class="post-meta"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>&nbsp;<span class="post-publish" title='2022-08-07 18:18:27'>published on <time datetime="2022-08-07">2022-08-07</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;学习笔记</a></span></div><div class="content">1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
+类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。
+整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。</div><div class="post-footer">
+    <a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">Read More</a><div class="post-tags">
         <i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/mysql/">MySQL</a></div></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
     <a href="/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">评论系统架构设计</a>
@@ -206,7 +215,7 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
     <a href="/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/">Read More</a><div class="post-tags">
         <i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E9%9D%A2%E8%AF%95/">面试</a></div></div>
 </article></div></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.101.0">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.104.3">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div></div>
   </footer></div><div class="widgets">
   <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">

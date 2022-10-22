@@ -1,0 +1,20 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>draft - Tag - Ther 的博客</title>
+    <link>https://blog.ther.cool/tags/draft/</link>
+    <description>draft - Tag - Ther 的博客</description>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 18 Sep 2022 20:52:42 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/tags/draft/" rel="self" type="application/rss+xml" /><item>
+  <title>定时任务框架设计</title>
+  <link>https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/</link>
+  <pubDate>Sun, 18 Sep 2022 20:52:42 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/</guid>
+  <description><![CDATA[定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器]]></description>
+</item></channel>
+</rss>

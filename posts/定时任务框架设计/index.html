@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <title>定时任务框架设计 - Ther 的博客</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器" />
+<meta name="keywords" content="draft" /><meta itemprop="name" content="定时任务框架设计">
+<meta itemprop="description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器"><meta itemprop="datePublished" content="2022-09-18T20:52:42+08:00" />
+<meta itemprop="dateModified" content="2022-09-18T20:52:42+08:00" />
+<meta itemprop="wordCount" content="218">
+<meta itemprop="keywords" content="draft," /><meta property="og:title" content="定时任务框架设计" />
+<meta property="og:description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-18T20:52:42+08:00" />
+<meta property="article:modified_time" content="2022-09-18T20:52:42+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="定时任务框架设计"/>
+<meta name="twitter:description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
+for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+关键实体
+任务
+Job 任务
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器"/>
+<meta name="application-name" content="Ther 的博客">
+<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><link rel="prev" href="https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "定时任务框架设计",
+    "inLanguage": "en-us",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/blog.ther.cool\/posts\/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1\/"
+    },"genre": "posts","keywords": "draft","wordcount":  218 ,
+    "url": "https:\/\/blog.ther.cool\/posts\/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1\/","datePublished": "2022-09-18T20:52:42+08:00","dateModified": "2022-09-18T20:52:42+08:00","publisher": {
+      "@type": "Organization",
+      "name": "Author"},"author": {
+        "@type": "Person",
+        "name": "Author"
+      },"description": ""
+  }
+  </script></head>
+  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+    <nav>
+      <ul class="menu"><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header>
+<div class="search-dropdown desktop">
+  <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+  <div id="search-dropdown-mobile"></div>
+</div>
+<main class="container" page-style="normal"><aside class="toc" id="toc-auto"></aside>
+
+  <aside class="aside-custom">
+    
+  </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">定时任务框架设计</h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>
+          <span class="post-category">included in <a href="/categories/draft/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;draft</a></span></div>
+      <div class="post-meta-line"><span title=2022-09-18&#32;20:52:42>
+            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-09-18" >2022-09-18</time>
+          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;218 words&nbsp;
+        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+    </div><div
+      class="content"
+      id="content"
+      
+      
+    ><p>定时任务，顾名思义，是指在某个时刻运行的任务。</p>
+<p>使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">time</span><span class="p">.</span><span class="nf">NewTicker</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">).</span><span class="nx">C</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        	<span class="c1">// 检查当前可运行的任务并运行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">stopped</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        	<span class="c1">// 终止信号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     		<span class="k">break</span>   	
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>代码其实很简单，重点是怎么组织任务。</p>
+<p>关键实体</p>
+<p>任务</p>
+<p>Job 任务</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Job</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">interval</span> <span class="kt">uint64</span> <span class="c1">// 指定时间单位下的任务执行间隔
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">name</span>     <span class="kt">string</span> <span class="c1">// 任务名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">unit</span>     <span class="nx">timeUnit</span> <span class="c1">// 任务时间间隔
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// err error // 任务关联的错误
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// loc *time.Location
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">lastRun</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="c1">// 任务上一次的执行时刻
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">nextRun</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="c1">// 任务下一次的执行时刻
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">f</span> <span class="kd">interface</span><span class="p">{}</span> <span class="c1">// 任务的执行函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">fParams</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{}</span> <span class="c1">// 任务执行函数的参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// lock bool
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// tags []string
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>Scheduler 调度器</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Scheduler</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">jobs</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Job</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">loc</span>  <span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Location</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>1.初始化调度器</p>
+<p>2.添加任务</p>
+<p>每次定时触发：</p>
+<ol>
+<li>
+<p>根据任务的下次运行时间戳从小到大，将调度器中的任务排序。</p>
+</li>
+<li>
+<p>从头开始遍历任务，判断任务是否应该运行（当前时间  &gt;= 任务的下次运行时间），因为任务已排序过，所以一旦遇到不符合的任务，直接中断遍历。</p>
+</li>
+<li>
+<p>将步骤 2 中得到的将要执行的任务，每个任务使用一个协程运行。记录 lastRun 为当前时间，并计算任务的下次运行时间 nextRun。</p>
+<p>3.1 任务的运行。判断当前任务是否有锁，有则尝试区获取锁。运行任务，传入函数及其参数。</p>
+</li>
+<li></li>
+</ol>
+<p>调度器的启动</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Scheduler</span><span class="p">)</span> <span class="nf">Start</span><span class="p">()</span> <span class="kd">chan</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stopped</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">bool</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ticker</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">NewTicker</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">ticker</span><span class="p">.</span><span class="nx">C</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">s</span><span class="p">.</span><span class="nf">RunPending</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">stopped</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">ticker</span><span class="p">.</span><span class="nf">Stop</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">stopped</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Start() 方法返回了一个 bool channel，stopped 作为一个容量为 1 的 channel， 用于控制调度器的终止。定时任务框架的使用着在决定将调度器停止后，可以通过向通道中的传入值来达到目的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">stopped</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// decide to stop scheduel
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">stopeed</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+</span></span></code></pre></div><p>执行任务</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">callJobFuncWithParams</span><span class="p">(</span><span class="nx">jobFunc</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">params</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">([]</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">f</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">jobFunc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">f</span><span class="p">.</span><span class="nf">Type</span><span class="p">().</span><span class="nf">NumIn</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">ErrParamsNotAdapted</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">in</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">params</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">p</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">params</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">in</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">f</span><span class="p">.</span><span class="nf">Call</span><span class="p">(</span><span class="nx">in</span><span class="p">),</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>计算任务下次执行的时间</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">scheduleNextRun</span><span class="p">()</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">j</span><span class="p">.</span><span class="nx">lastRun</span> <span class="o">==</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">j</span><span class="p">.</span><span class="nx">lastRun</span> <span class="p">=</span> <span class="nx">now</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-09-18&#32;20:52:42>Updated on 2022-09-18</span>
+      </div>
+      <div class="post-info-license "></div>
+    </div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/draft/">draft</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="prev" rel="prev" title="MySQL 数据类型"><i class="fa-solid fa-angle-left fa-fw"></i>MySQL 数据类型</a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.104.3">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div></div>
+  </footer></div><div class="widgets">
+  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+      <i class="fa-solid fa-arrow-up fa-fw"></i>
+    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+      <i class="fa-solid fa-comment fa-fw"></i>
+    </a>
+  </div><div id="mask"></div>
+</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+</html>
