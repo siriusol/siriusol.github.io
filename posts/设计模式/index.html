@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <title>设计模式 - Ther 的博客</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="面向对象设计原则 可维护性(Maintainability)：指软件能够被理解、改正、适应及扩展的难易程度。
+可复用性(Reusability)：指软件能够被重复使用的难易程度。
+面向对象设计的目标之一在于支持可维护性复用。
+设计模式 设计模式的分类： 根据目的（模式是用来做什么的）可分为创建型(Creational)，**结构型(Structural)和行为型(Behavioral)**三类：
+创建型模式主要用于创建对象； 结构型模式主要用于处理类或对象的组合； 行为型模式主要用于描述类或对象如何交互和怎样分配职责。 根据范围，即模式主要是处理类之间的关系还是处理对象之间的关系，可分为类模式和对象模式两种：
+类模式处理类和子类之间的关系，这些关系通过继承建立，在编译时刻就被确定下来，是一种静态关系； 对象模式处理对象间的关系，这些关系在运行时变化，更具动态性。 创建型模式 结构型模式 行为型模式 一些名词 模式(Pattern) 起源于建筑业。
+模式：
+Context（模式可适用的前提条件）；
+Theme或Problem（在特定条件下要解决的目标问题）；
+Solution（对目标问题求解过程中各种物理关系的记述）。
+模式是特定环境下人们解决某类重复出现问题的一套成功或有效的解决方案。 A pattern is a successful or efficient solution to a recurring problem within a context.
+软件模式：在一定条件下的软件开发问题及其解法。 问题描述；前提条件（环境或约束条件）；解法；效果。
+大三律(Rule of Three)：只有经过3个以上不同类型（或不同领域）的系统的校验，一个解决方案才能从候选模式升格为模式。
+设计模式(Design Pattern)：一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。
+是一种用于对软件系统中不断重现的设计问题的解决方案进行文档化的技术。
+是一种共享专家设计经验的技术。
+目的：为了可重用代码、让代码更容易被他人理解、提高代码可靠性。
+设计模式的定义：
+设计模式是在特定环境下为解决某一通用软件设计问题提供的一套定制的解决方案，该方案描述了对象和类之间的相互作用。
+Design patterns are descriptions of communicating objects and classes that are customized to solve a general design problem in a particular context." />
+<meta name="keywords" content="设计模式" /><meta itemprop="name" content="设计模式">
+<meta itemprop="description" content="面向对象设计原则 可维护性(Maintainability)：指软件能够被理解、改正、适应及扩展的难易程度。
+可复用性(Reusability)：指软件能够被重复使用的难易程度。
+面向对象设计的目标之一在于支持可维护性复用。
+设计模式 设计模式的分类： 根据目的（模式是用来做什么的）可分为创建型(Creational)，**结构型(Structural)和行为型(Behavioral)**三类：
+创建型模式主要用于创建对象； 结构型模式主要用于处理类或对象的组合； 行为型模式主要用于描述类或对象如何交互和怎样分配职责。 根据范围，即模式主要是处理类之间的关系还是处理对象之间的关系，可分为类模式和对象模式两种：
+类模式处理类和子类之间的关系，这些关系通过继承建立，在编译时刻就被确定下来，是一种静态关系； 对象模式处理对象间的关系，这些关系在运行时变化，更具动态性。 创建型模式 结构型模式 行为型模式 一些名词 模式(Pattern) 起源于建筑业。
+模式：
+Context（模式可适用的前提条件）；
+Theme或Problem（在特定条件下要解决的目标问题）；
+Solution（对目标问题求解过程中各种物理关系的记述）。
+模式是特定环境下人们解决某类重复出现问题的一套成功或有效的解决方案。 A pattern is a successful or efficient solution to a recurring problem within a context.
+软件模式：在一定条件下的软件开发问题及其解法。 问题描述；前提条件（环境或约束条件）；解法；效果。
+大三律(Rule of Three)：只有经过3个以上不同类型（或不同领域）的系统的校验，一个解决方案才能从候选模式升格为模式。
+设计模式(Design Pattern)：一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。
+是一种用于对软件系统中不断重现的设计问题的解决方案进行文档化的技术。
+是一种共享专家设计经验的技术。
+目的：为了可重用代码、让代码更容易被他人理解、提高代码可靠性。
+设计模式的定义：
+设计模式是在特定环境下为解决某一通用软件设计问题提供的一套定制的解决方案，该方案描述了对象和类之间的相互作用。
+Design patterns are descriptions of communicating objects and classes that are customized to solve a general design problem in a particular context."><meta itemprop="datePublished" content="2020-01-02T16:57:10+08:00" />
+<meta itemprop="dateModified" content="2020-01-02T16:57:10+08:00" />
+<meta itemprop="wordCount" content="75">
+<meta itemprop="keywords" content="设计模式," /><meta property="og:title" content="设计模式" />
+<meta property="og:description" content="面向对象设计原则 可维护性(Maintainability)：指软件能够被理解、改正、适应及扩展的难易程度。
+可复用性(Reusability)：指软件能够被重复使用的难易程度。
+面向对象设计的目标之一在于支持可维护性复用。
+设计模式 设计模式的分类： 根据目的（模式是用来做什么的）可分为创建型(Creational)，**结构型(Structural)和行为型(Behavioral)**三类：
+创建型模式主要用于创建对象； 结构型模式主要用于处理类或对象的组合； 行为型模式主要用于描述类或对象如何交互和怎样分配职责。 根据范围，即模式主要是处理类之间的关系还是处理对象之间的关系，可分为类模式和对象模式两种：
+类模式处理类和子类之间的关系，这些关系通过继承建立，在编译时刻就被确定下来，是一种静态关系； 对象模式处理对象间的关系，这些关系在运行时变化，更具动态性。 创建型模式 结构型模式 行为型模式 一些名词 模式(Pattern) 起源于建筑业。
+模式：
+Context（模式可适用的前提条件）；
+Theme或Problem（在特定条件下要解决的目标问题）；
+Solution（对目标问题求解过程中各种物理关系的记述）。
+模式是特定环境下人们解决某类重复出现问题的一套成功或有效的解决方案。 A pattern is a successful or efficient solution to a recurring problem within a context.
+软件模式：在一定条件下的软件开发问题及其解法。 问题描述；前提条件（环境或约束条件）；解法；效果。
+大三律(Rule of Three)：只有经过3个以上不同类型（或不同领域）的系统的校验，一个解决方案才能从候选模式升格为模式。
+设计模式(Design Pattern)：一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。
+是一种用于对软件系统中不断重现的设计问题的解决方案进行文档化的技术。
+是一种共享专家设计经验的技术。
+目的：为了可重用代码、让代码更容易被他人理解、提高代码可靠性。
+设计模式的定义：
+设计模式是在特定环境下为解决某一通用软件设计问题提供的一套定制的解决方案，该方案描述了对象和类之间的相互作用。
+Design patterns are descriptions of communicating objects and classes that are customized to solve a general design problem in a particular context." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.ther.cool/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-01-02T16:57:10+08:00" />
+<meta property="article:modified_time" content="2020-01-02T16:57:10+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="设计模式"/>
+<meta name="twitter:description" content="面向对象设计原则 可维护性(Maintainability)：指软件能够被理解、改正、适应及扩展的难易程度。
+可复用性(Reusability)：指软件能够被重复使用的难易程度。
+面向对象设计的目标之一在于支持可维护性复用。
+设计模式 设计模式的分类： 根据目的（模式是用来做什么的）可分为创建型(Creational)，**结构型(Structural)和行为型(Behavioral)**三类：
+创建型模式主要用于创建对象； 结构型模式主要用于处理类或对象的组合； 行为型模式主要用于描述类或对象如何交互和怎样分配职责。 根据范围，即模式主要是处理类之间的关系还是处理对象之间的关系，可分为类模式和对象模式两种：
+类模式处理类和子类之间的关系，这些关系通过继承建立，在编译时刻就被确定下来，是一种静态关系； 对象模式处理对象间的关系，这些关系在运行时变化，更具动态性。 创建型模式 结构型模式 行为型模式 一些名词 模式(Pattern) 起源于建筑业。
+模式：
+Context（模式可适用的前提条件）；
+Theme或Problem（在特定条件下要解决的目标问题）；
+Solution（对目标问题求解过程中各种物理关系的记述）。
+模式是特定环境下人们解决某类重复出现问题的一套成功或有效的解决方案。 A pattern is a successful or efficient solution to a recurring problem within a context.
+软件模式：在一定条件下的软件开发问题及其解法。 问题描述；前提条件（环境或约束条件）；解法；效果。
+大三律(Rule of Three)：只有经过3个以上不同类型（或不同领域）的系统的校验，一个解决方案才能从候选模式升格为模式。
+设计模式(Design Pattern)：一套被反复使用的、多数人知晓的、经过分类编目的、代码设计经验的总结。
+是一种用于对软件系统中不断重现的设计问题的解决方案进行文档化的技术。
+是一种共享专家设计经验的技术。
+目的：为了可重用代码、让代码更容易被他人理解、提高代码可靠性。
+设计模式的定义：
+设计模式是在特定环境下为解决某一通用软件设计问题提供的一套定制的解决方案，该方案描述了对象和类之间的相互作用。
+Design patterns are descriptions of communicating objects and classes that are customized to solve a general design problem in a particular context."/>
+<meta name="application-name" content="Ther 的博客">
+<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" /><link rel="next" href="https://blog.ther.cool/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "设计模式",
+    "inLanguage": "en-us",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/blog.ther.cool\/posts\/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F\/"
+    },"genre": "posts","keywords": "设计模式","wordcount":  75 ,
+    "url": "https:\/\/blog.ther.cool\/posts\/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F\/","datePublished": "2020-01-02T16:57:10+08:00","dateModified": "2020-01-02T16:57:10+08:00","publisher": {
+      "@type": "Organization",
+      "name": "Author"},"author": {
+        "@type": "Person",
+        "name": "Author"
+      },"description": ""
+  }
+  </script></head>
+  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+    <nav>
+      <ul class="menu"><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+              
+            >
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              >文章</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              >分类</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              >标签</a></li><li
+              class="menu-item"
+            ><a
+                class="menu-link"
+                href="/about/"
+                
+                
+              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header>
+<div class="search-dropdown desktop">
+  <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+  <div id="search-dropdown-mobile"></div>
+</div>
+<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+  </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">设计模式</h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
+      </span></span>
+          <span class="post-category">included in <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;设计模式</a></span></div>
+      <div class="post-meta-line"><span title=2020-01-02&#32;16:57:10>
+            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-01-02" >2020-01-02</time>
+          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;75 words&nbsp;
+        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+    </div><div class="details toc" id="toc-static" kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#面向对象设计原则">面向对象设计原则</a></li>
+    <li><a href="#设计模式">设计模式</a>
+      <ul>
+        <li><a href="#设计模式的分类">设计模式的<strong>分类：</strong></a></li>
+        <li><a href="#创建型模式">创建型模式</a></li>
+        <li><a href="#结构型模式">结构型模式</a></li>
+        <li><a href="#行为型模式">行为型模式</a></li>
+        <li><a href="#一些名词">一些名词</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h2 id="面向对象设计原则">面向对象设计原则</h2>
+<ul>
+<li>
+<p><strong>可维护性(Maintainability)</strong>：指软件能够被理解、改正、适应及扩展的难易程度。</p>
+</li>
+<li>
+<p><strong>可复用性(Reusability)</strong>：指软件能够被重复使用的难易程度。</p>
+</li>
+</ul>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/11/26/rQXUKy9lV6kOPc8.png"
+    data-srcset="https://s2.loli.net/2022/11/26/rQXUKy9lV6kOPc8.png, https://s2.loli.net/2022/11/26/rQXUKy9lV6kOPc8.png 1.5x, https://s2.loli.net/2022/11/26/rQXUKy9lV6kOPc8.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/11/26/rQXUKy9lV6kOPc8.png"
+    title="img" /></p>
+<p>面向对象设计的目标之一在于<strong>支持可维护性复用</strong>。</p>
+<h2 id="设计模式">设计模式</h2>
+<h3 id="设计模式的分类">设计模式的<strong>分类：</strong></h3>
+<ul>
+<li>
+<p>根据目的（模式是用来做什么的）可分为<strong>创建型(Creational)</strong>，**结构型(Structural)<strong>和</strong>行为型(Behavioral)**三类：</p>
+<ul>
+<li>创建型模式主要用于<strong>创建对象</strong>；</li>
+<li>结构型模式主要用于<strong>处理类或对象的组合</strong>；</li>
+<li>行为型模式主要用于描述类或对象如何<strong>交互</strong>和怎样<strong>分配职责</strong>。</li>
+</ul>
+</li>
+<li>
+<p>根据范围，即模式主要是处理类之间的关系还是处理对象之间的关系，可分为<strong>类模式</strong>和<strong>对象模式</strong>两种：</p>
+<ul>
+<li>类模式处理类和子类之间的关系，这些关系通过继承建立，在编译时刻就被确定下来，是一种<strong>静态</strong>关系；</li>
+<li>对象模式处理对象间的关系，这些关系在运行时变化，更具<strong>动态</strong>性。</li>
+</ul>
+</li>
+</ul>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/11/26/unQKGlX4xp6gMvr.png"
+    data-srcset="https://s2.loli.net/2022/11/26/unQKGlX4xp6gMvr.png, https://s2.loli.net/2022/11/26/unQKGlX4xp6gMvr.png 1.5x, https://s2.loli.net/2022/11/26/unQKGlX4xp6gMvr.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/11/26/unQKGlX4xp6gMvr.png"
+    title="img" /></p>
+<h3 id="创建型模式">创建型模式</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/11/26/18tq7SsnegLZVfb.png"
+    data-srcset="https://s2.loli.net/2022/11/26/18tq7SsnegLZVfb.png, https://s2.loli.net/2022/11/26/18tq7SsnegLZVfb.png 1.5x, https://s2.loli.net/2022/11/26/18tq7SsnegLZVfb.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/11/26/18tq7SsnegLZVfb.png"
+    title="img" /></p>
+<h3 id="结构型模式">结构型模式</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/11/26/Yr2zK5eNXg1T6wq.png"
+    data-srcset="https://s2.loli.net/2022/11/26/Yr2zK5eNXg1T6wq.png, https://s2.loli.net/2022/11/26/Yr2zK5eNXg1T6wq.png 1.5x, https://s2.loli.net/2022/11/26/Yr2zK5eNXg1T6wq.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/11/26/Yr2zK5eNXg1T6wq.png"
+    title="img" /></p>
+<h3 id="行为型模式">行为型模式</h3>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="https://s2.loli.net/2022/11/26/E1cFZ4Nx2iWwD6Q.png"
+    data-srcset="https://s2.loli.net/2022/11/26/E1cFZ4Nx2iWwD6Q.png, https://s2.loli.net/2022/11/26/E1cFZ4Nx2iWwD6Q.png 1.5x, https://s2.loli.net/2022/11/26/E1cFZ4Nx2iWwD6Q.png 2x"
+    data-sizes="auto"
+    alt="https://s2.loli.net/2022/11/26/E1cFZ4Nx2iWwD6Q.png"
+    title="img" /></p>
+<h3 id="一些名词">一些名词</h3>
+<ul>
+<li>
+<p><strong>模式(Pattern)</strong> 起源于建筑业。</p>
+</li>
+<li>
+<p>模式：</p>
+</li>
+</ul>
+<p><strong>Context</strong>（模式可适用的前提条件）；</p>
+<p>Theme或<strong>Problem</strong>（在特定条件下要解决的目标问题）；</p>
+<p><strong>Solution</strong>（对目标问题求解过程中各种物理关系的记述）。</p>
+<ul>
+<li>模式是<strong>特定环境下</strong>人们解决某类重复出现<strong>问题</strong>的一套成功或有效的<strong>解决方案</strong>。</li>
+</ul>
+<p>A pattern is a successful or efficient <strong>solution</strong> to a recurring <strong>problem</strong> within a <strong>context</strong>.</p>
+<ul>
+<li><strong>软件模式</strong>：在<strong>一定条件下</strong>的<strong>软件开发问题</strong>及其<strong>解法</strong>。</li>
+</ul>
+<p>问题描述；前提条件（环境或约束条件）；解法；效果。</p>
+<ul>
+<li>
+<p><strong>大三律(Rule of Three)</strong>：只有经过3个以上不同类型（或不同领域）的系统的校验，一个解决方案才能从候选模式升格为模式。</p>
+</li>
+<li>
+<p><strong>设计模式(Design Pattern)</strong>：一套<strong>被反复使用的</strong>、<strong>多数人知晓的</strong>、<strong>经过分类编目的</strong>、<strong>代码设计经验的</strong>总结。</p>
+</li>
+</ul>
+<p>是一种用于对软件系统中不断重现的设计问题的<strong>解决方案</strong>进行<strong>文档化</strong>的技术。</p>
+<p>是一种<strong>共享专家设计经验</strong>的技术。</p>
+<ul>
+<li>
+<p>目的：为了可重用代码、让代码更容易被他人理解、提高代码可靠性。</p>
+</li>
+<li>
+<p>设计模式的<strong>定义</strong>：</p>
+</li>
+</ul>
+<p>设计模式是在<strong>特定环境下</strong>为解决<strong>某一通用软件设计问题</strong>提供的<strong>一套定制的解决方案</strong>，该方案描述了对象和类之间的相互作用。</p>
+<p>Design patterns are descriptions of communicating objects and classes that are customized to <strong>solve</strong> a general <strong>design</strong> <strong>problem</strong> in a particular <strong>context</strong>.</p>
+<ul>
+<li>设计模式的基本要素：<strong>关键要素</strong></li>
+</ul>
+<p><strong>模式名称</strong>、<strong>问题</strong>、目的、<strong>解决方案</strong>、<strong>效果</strong>、实例代码和相关设计模式。</p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2020-01-02&#32;16:57:10>Updated on 2020-01-02</span>
+      </div>
+      <div class="post-info-license "></div>
+    </div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav">
+      <a href="/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/" class="next" rel="next" title="赛马问题">赛马问题<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.107.0">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div></div>
+  </footer></div><div class="widgets">
+  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+      <i class="fa-solid fa-arrow-up fa-fw"></i>
+    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+      <i class="fa-solid fa-comment fa-fw"></i>
+    </a>
+  </div><div id="mask"></div>
+</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+</html>
