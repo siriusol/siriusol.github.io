@@ -3,9 +3,23 @@
     <title>Ther 的博客</title>
     <link>https://blog.ther.cool/</link>
     <description>Ther 的博客</description>
-    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 18 Sep 2022 20:52:42 &#43;0800</lastBuildDate>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 19 Mar 2023 20:04:52 &#43;0800</lastBuildDate>
       <atom:link href="https://blog.ther.cool/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>Go in action-笔记</title>
+  <link>https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/</link>
+  <pubDate>Sun, 19 Mar 2023 20:04:52 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/</guid>
+  <description><![CDATA[一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C++ 那样，要遍历依赖链中所有依赖的库。
+因为没有从编译代码到执行代码的中间过程，用动态语言编写应用程序可以快速看到输出。代价是，动态语言不提供静态语言提供的类型安全特性，不得不经常用大量的测试套件来避免在运行的时候出现类型错误这类 bug。
+并发 现代计算机都拥有多个核，但是大部分编程语言都没有有效的工具让程序可以轻易利用这些资源。这些语言需要 写大量的线程同步代码来利用多个核，很容易导致错误。
+Go 语言对并发的支持是这门语言最重要的特性之一。goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
+goroutine goroutine 是可以与其他 goroutine 并行执行的函数，同时也会与主程序（程序的入口）并行执行。在其他编程语言中，需要用线程来完成同样的事情，而在 Go 语言中会使用同一个线程来执行多个 goroutine。
+例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组逻辑处理器上调度执行 goroutine。每个逻辑处理器绑定到一个操作系统线程上（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。
+如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：
+func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&#34;发生了可怕的事情&#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。]]></description>
+</item><item>
   <title>定时任务框架设计</title>
   <link>https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/</link>
   <pubDate>Sun, 18 Sep 2022 20:52:42 &#43;0800</pubDate>
