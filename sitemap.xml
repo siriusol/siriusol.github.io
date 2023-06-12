@@ -2,11 +2,13 @@
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   ><url>
-      <loc>https://blog.ther.cool/categories/</loc><lastmod>2023-03-19T20:04:52&#43;08:00</lastmod></url><url>
+      <loc>https://blog.ther.cool/categories/</loc><lastmod>2023-06-06T09:25:03&#43;08:00</lastmod></url><url>
+      <loc>https://blog.ther.cool/posts/</loc><lastmod>2023-06-06T09:25:03&#43;08:00</lastmod></url><url>
+      <loc>https://blog.ther.cool/</loc><lastmod>2023-06-06T09:25:03&#43;08:00</lastmod></url><url>
+      <loc>https://blog.ther.cool/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</loc><lastmod>2023-06-06T09:25:03&#43;08:00</lastmod></url><url>
+      <loc>https://blog.ther.cool/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/</loc><lastmod>2023-06-06T09:25:03&#43;08:00</lastmod></url><url>
       <loc>https://blog.ther.cool/categories/go/</loc><lastmod>2023-03-19T20:04:52&#43;08:00</lastmod></url><url>
       <loc>https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/</loc><lastmod>2023-03-19T20:04:52&#43;08:00</lastmod></url><url>
-      <loc>https://blog.ther.cool/posts/</loc><lastmod>2023-03-19T20:04:52&#43;08:00</lastmod></url><url>
-      <loc>https://blog.ther.cool/</loc><lastmod>2023-03-19T20:04:52&#43;08:00</lastmod></url><url>
       <loc>https://blog.ther.cool/tags/draft/</loc><lastmod>2022-09-18T20:52:42&#43;08:00</lastmod></url><url>
       <loc>https://blog.ther.cool/categories/draft/</loc><lastmod>2022-09-18T20:52:42&#43;08:00</lastmod></url><url>
       <loc>https://blog.ther.cool/tags/</loc><lastmod>2022-09-18T20:52:42&#43;08:00</lastmod></url><url>

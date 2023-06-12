@@ -1,0 +1,27 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>消息队列 - Category - Ther 的博客</title>
+    <link>https://blog.ther.cool/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</link>
+    <description>消息队列 - Category - Ther 的博客</description>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Jun 2023 09:25:03 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="self" type="application/rss+xml" /><item>
+  <title>消息队列知识笔记</title>
+  <link>https://blog.ther.cool/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/</link>
+  <pubDate>Tue, 06 Jun 2023 09:25:03 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/</guid>
+  <description><![CDATA[如何确保消息不会丢失? 现在主流的消息队列产品都提供了非常完善的消息可靠性保证机制，完全可以做到在消息传递过程中，即使发生网络中断或者硬件故障，也能确保消息的可靠传递，不丢消息。
+绝大部分丢消息的原因都是由于开发者不熟悉消息队列，没有正确使用和配置消息队列导致的。
+检测消息丢失的方法 如果是 IT 基础设施比较完善的公司，一般都有分布式链路追踪系统，使用类似的追踪系统可以很方便地追踪每一条消息。如果没有这样的追踪系统，这里我提供一个比较简单的方法，来检查是否有消息丢失的情况。
+**我们可以利用消息队列的有序性来验证是否有消息丢失。**原理非常简单，在 Producer 端，我们给每个发出的消息附加一个连续递增的序号，然后在 Consumer 端来检查这个序号的连续性。
+如果没有消息丢失，Consumer 收到消息的序号必然是连续递增的，或者说收到的消息，其中的序号必然是上一条消息的序号 +1。如果检测到序号不连续，那就是丢消息了。还可以通过缺失的序号来确定丢失的是哪条消息，方便进一步排查原因。
+大多数消息队列的客户端都支持拦截器机制，你可以利用这个拦截器机制，在 Producer 发送消息之前的拦截器中将序号注入到消息中，在 Consumer 收到消息的拦截器中检测序号的连续性，这样实现的好处是消息检测的代码不会侵入到你的业务代码中，待你的系统稳定后，也方便将这部分检测的逻辑关闭或者删除。
+如果是在一个分布式系统中实现这个检测方法，有几个问题需要你注意。
+首先，像 Kafka 和 RocketMQ 这样的消息队列，它是不保证在 Topic 上的严格顺序的，只能保证分区上的消息是有序的，所以我们在发消息的时候必须要指定分区，并且，在每个分区单独检测消息序号的连续性。
+如果你的系统中 Producer 是多实例的，由于并不好协调多个 Producer 之间的发送顺序，所以也需要每个 Producer 分别生成各自的消息序号，并且需要附加上 Producer 的标识，在 Consumer 端按照每个 Producer 分别来检测序号的连续性。
+Consumer 实例的数量最好和分区数量一致，做到 Consumer 和分区一一对应，这样会比较方便地在 Consumer 内检测消息序号的连续性。
+疑问：怎么保存上一条消息的序号？
+确保消息可靠传递 ，整个消息从生产到消费的过程中，哪些地方可能会导致丢消息，以及应该如何避免消息丢失。
+你可以看下这个图，一条消息从生产到消费完成这个过程，可以划分三个阶段，为了方便描述，我给每个阶段分别起了个名字。
+生产阶段: 在这个阶段，从消息在 Producer 创建出来，经过网络传输发送到 Broker 端。 存储阶段: 在这个阶段，消息在 Broker 端存储，如果是集群，消息会在这个阶段被复制到其他的副本上。 消费阶段: 在这个阶段，Consumer 从 Broker 上拉取消息，经过网络传输发送到 Consumer 上。 1. 生产阶段]]></description>
+</item></channel>
+</rss>
