@@ -3,7 +3,24 @@
     <title>All Posts - Ther 的博客</title>
     <link>https://blog.ther.cool/posts/</link>
     <description>All Posts | Ther 的博客</description>
-    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 12 Jun 2023 09:46:30 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/posts/" rel="self" type="application/rss+xml" /><item>
+    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 29 Jul 2023 22:43:16 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>Kafka高吞吐设计</title>
+  <link>https://blog.ther.cool/posts/kafka%E9%AB%98%E5%90%9E%E5%90%90%E8%AE%BE%E8%AE%A1/</link>
+  <pubDate>Sat, 29 Jul 2023 22:43:16 &#43;0800</pubDate>
+  <author>Author</author>
+  <guid>https://blog.ther.cool/posts/kafka%E9%AB%98%E5%90%9E%E5%90%90%E8%AE%BE%E8%AE%A1/</guid>
+  <description><![CDATA[Kafka 采用了一系列的技术优化来保证高吞吐，这其中包括批量处理、压缩、零拷贝、磁盘顺序读写、页面缓存技术、Reactor 网络架构设计模式等。接下来主要从生产端、服务端和消费端三个方面来剖析和讨论。同时讨论一些高性能的设计方法，以及操作系统底层的工作模式，这些都有利于高效地设计出一个高吞吐的系统。
+生产端 Kafka 高吞吐量的特性在生产端这里是怎么体现的呢？要想回答这个问题，首先得了解下生产端是如何发送消息的，这属于铺垫知识。下图详细描述了生产端发送消息的全部流程。
+结合该图，我们可以看到发送一条消息需要经历 7 个步骤，这些步骤可以分为三大块，分别是 KafkaProducer 主线程、RecordAccumulator 缓存和 Sender 子线程。
+KafkaProducer 主线程，主要负责创建信息，并调用拦截器、序列化器、分区器分别对消息进行拦截、序列化和路由分区，然后对消息进行压缩，把压缩过的消息放入 RecordAccumulator 缓存中。
+RecordAccumulator 缓存，为每个分区创建了一个队列，这个队列是要发送到某个分区的消息集合。
+Sender 子线程，是真正发送消息的线程。满足一定条件时，KafkaProducer 主线程会激活 Sender 子线程。Sender 子线程从 RecordAccumulator 缓存中拿到要发送的消息，并把消息交给底层网络组件来发送。对于网络接收和网络发送的数据，网络组件会通过两个缓存集合来维护：completedReceives 是负责保存完成的网络接收的集合，completedSends 是负责保存完成的网络发送的集合。服务端成功响应返回给 Sender 子线程后，Sender 子线程就会删除 RecordAccumulator 缓存内已经发送成功的消息。
+介绍完生产端的这个架构设计后，接下来就从以下三点解释一下这个架构从哪些方面提升了消息的吞吐量。
+1. 多线程异步的设计 生产端在异步的设计上体现到了两个方面。
+第一个方面，KafkaProducer 主线程和 Sender 子线程各司其职，通过 RecordAccumulator 缓存交互数据。
+KafkaProducer 主线程有同步和异步两种发送方式，但是这两者底层的实现是相同的，都是通过 Sender 子线程异步发送消息实现的。不同的地方是同步场景下主线程会等待 Sender 子线程发送完消息再返回，而异步是不等待 Sender 子线程发送完消息就返回了。
+KafkaProducer 主线程发送消息时并不是真正的网络发送，而是将消息放入 RecordAccumulator 中缓存，然后主线程就从 send() 方法返回，之后 KafkaProducer 主线程会不断调用 send() 方法把消息缓存到 RecordAccumulator 中，而不去在意消息是否发送出去了。真正发送消息的是 Sender 子线程，Sender 子线程从 RecordAccumulator 缓存中取出消息，然后调用底层网络组件完成消息的发送。]]></description>
+</item><item>
   <title>消息队列模型</title>
   <link>https://blog.ther.cool/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B/</link>
   <pubDate>Mon, 12 Jun 2023 09:46:30 &#43;0800</pubDate>
@@ -118,30 +135,5 @@ type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 
   <author>Author</author>
   <guid>https://blog.ther.cool/posts/%E6%B5%8B%E8%AF%95/</guid>
   <description><![CDATA[测试一级标题 import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, my blog!&#34;) } 网站地址 https://blog.ther.cool]]></description>
-</item><item>
-  <title>秒杀系统的设计</title>
-  <link>https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/</link>
-  <pubDate>Sat, 21 Nov 2020 22:26:24 &#43;0800</pubDate>
-  <author>Author</author>
-  <guid>https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/</guid>
-  <description><![CDATA[秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
-秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
-并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
-并发写的处理原则也一样，它要求我们在数据库层面独立出来一个库，做特殊的处理。
-另外，我们还要针对秒杀系统做一些保护，针对意料之外的情况设计兜底方案，以防止最坏的情况发生。
-从一个架构师的角度来看，要想打造并维护一个超大流量并发读写、高性能、高可用的系统，在整个用户请求路径上从浏览器到服务端我们要遵循几个原则：
-保证用户请求的数据尽量少 请求数尽量少 路径尽量短 依赖尽量少 不要有单点 秒杀的整体架构可以概括为“稳、准、快”几个关键字。
-“稳”，就是整个系统架构要满足高可用，流量符合预期时肯定要稳定，就是超出预期时也同样不能掉链子，你要保证秒杀活动顺利完成，即秒杀商品顺利地卖出去，这个是最基本的前提。
-“准”，就是秒杀 10 台 iPhone，那就只能成交 10 台，多一台少一台都不行。一旦库存不对，那平台就要承担损失，所以“准”就是要求保证数据的一致性。
-“快”，它就是说系统的性能要足够高，否则你怎么支撑这么大的流量呢？不光是服务端要做极致的性能优化，而且在整个请求链路上都要做协同的优化，每个地方快一点，整个系统就完美了。
-所以从技术角度上看“稳、准、快”，就对应了我们架构上的高可用、一致性和高性能的要求。
-高性能。 秒杀涉及大量的并发读和并发写，因此支持高并发访问这点非常关键。将从设计数据的动静分离方案、热点的发现与隔离、请求的削峰与分层过滤、服务端的极致优化这 4 个方面优化。 一致性。 秒杀中商品减库存的实现方式同样关键。可想而知，有限数量的商品在同一时刻被很多倍的请求同时来减库存，减库存又分为“拍下减库存”“付款减库存”以及预扣库存等几种，在大并发更新的过程中都要保证数据的准确性。 高可用。 虽然有很多极致的优化思路，但现实中总难免出现一些考虑不到的情况，所以要保证系统的高可用和正确性，我们还要设计一个 PlanB 来兜底，以便在最坏情况发生时仍然能够从容应对。 1. 架构原则：“4 要 1 不要” 数据要尽量少 所谓“数据要尽量少”，首先是指用户请求的数据能少就少。请求的数据包括上传给系统的数据和系统返回给用户的数据（通常就是网页）。
-为什么“数据要尽量少”呢？因为首先这些数据在网络上传输需要时间，其次不管是请求数据还是返回数据都需要服务器做处理，而服务器在写网络时通常都要做压缩和字符编码，这些都非常消耗 CPU，所以减少传输的数据量可以显著减少 CPU 的使用。例如，我们可以简化秒杀页面的大小，去掉不必要的页面装饰效果等等。
-其次，“数据要尽量少”还要求系统依赖的数据能少就少，包括系统完成某些业务逻辑需要读取和保存的数据，这些数据一般是和后台服务以及数据库打交道的。调用其他服务会涉及数据的序列化和反序列化，而这也是 CPU 的一大杀手，同样也会增加延时。而且，数据库本身也容易成为一个瓶颈，所以和数据库打交道越少越好，数据越简单、越小则越好。
-请求数要尽量少 用户请求的页面返回后，浏览器渲染这个页面还要包含其他的额外请求，比如说，这个页面依赖的 CSS / JavaScript、图片，以及 Ajax 请求等等都定义为“额外请求”，这些额外请求应该尽量少。因为浏览器每发出一个请求都多少会有一些消耗，例如建立连接要做三次握手，有的时候有页面依赖或者连接数限制，一些请求（例如 JavaScript）还需要串行加载等。另外，如果不同请求的域名不一样的话，还涉及这些域名的 DNS 解析，可能会耗时更久。所以减少请求数可以显著减少以上这些因素导致的资源消耗。
-例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
-https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
-路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
-通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。]]></description>
 </item></channel>
 </rss>
