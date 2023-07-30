@@ -1,190 +1,236 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-    <meta name="robots" content="noodp" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <title>定时任务框架设计 - Ther 的博客</title><meta name="author" content="">
-<meta name="author-link" content="">
-<meta name="description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='定时任务，顾名思义，是指在某个时刻运行的任务。
 使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
-for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+for { select { case &amp;lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &amp;lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
 关键实体
 任务
 Job 任务
-type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器" />
-<meta name="keywords" content="draft" /><meta itemprop="name" content="定时任务框架设计">
-<meta itemprop="description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器'>
+<title>定时任务框架设计</title>
+
+<link rel='canonical' href='https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='定时任务框架设计'>
+<meta property='og:description' content='定时任务，顾名思义，是指在某个时刻运行的任务。
 使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
-for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+for { select { case &amp;lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &amp;lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
 关键实体
 任务
 Job 任务
-type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器"><meta itemprop="datePublished" content="2022-09-18T20:52:42+08:00" />
-<meta itemprop="dateModified" content="2022-09-18T20:52:42+08:00" />
-<meta itemprop="wordCount" content="218">
-<meta itemprop="keywords" content="draft," /><meta property="og:title" content="定时任务框架设计" />
-<meta property="og:description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
-使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
-for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
-关键实体
-任务
-Job 任务
-type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-09-18T20:52:42+08:00" />
-<meta property="article:modified_time" content="2022-09-18T20:52:42+08:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="定时任务框架设计"/>
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器'>
+<meta property='og:url' content='https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/'>
+<meta property='og:site_name' content='Ther 的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='draft' /><meta property='article:published_time' content='2022-09-18T20:52:42&#43;08:00'/><meta property='article:modified_time' content='2022-09-18T20:52:42&#43;08:00'/>
+<meta name="twitter:title" content="定时任务框架设计">
 <meta name="twitter:description" content="定时任务，顾名思义，是指在某个时刻运行的任务。
 使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为
-for { select { case &lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
+for { select { case &amp;lt;-time.NewTicker(1 * time.Second).C: // 检查当前可运行的任务并运行 case &amp;lt;-stopped: // 终止信号 break } } 代码其实很简单，重点是怎么组织任务。
 关键实体
 任务
 Job 任务
-type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器"/>
-<meta name="application-name" content="Ther 的博客">
-<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><link rel="prev" href="https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" /><link rel="next" href="https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "定时任务框架设计",
-    "inLanguage": "en-us",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.ther.cool\/posts\/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1\/"
-    },"genre": "posts","keywords": "draft","wordcount":  218 ,
-    "url": "https:\/\/blog.ther.cool\/posts\/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1\/","datePublished": "2022-09-18T20:52:42+08:00","dateModified": "2022-09-18T20:52:42+08:00","publisher": {
-      "@type": "Organization",
-      "name": "Author"},"author": {
-        "@type": "Person",
-        "name": "Author"
-      },"description": ""
-  }
-  </script></head>
-  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
-  <div class="header-wrapper">
-    <div class="header-title">
-      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-    <nav>
-      <ul class="menu"><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/posts/"
+type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 name string // 任务名称 unit timeUnit // 任务时间间隔 // err error // 任务关联的错误 // loc *time.Location lastRun time.Time // 任务上一次的执行时刻 nextRun time.Time // 任务下一次的执行时刻 f interface{} // 任务的执行函数 fParams []interface{} // 任务执行函数的参数 // lock bool // tags []string } Scheduler 调度器">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huba86cf191a79332d5cad488007211472_22918_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ther 的博客</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/posts/' >
                 
                 
-              >文章</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/categories/"
                 
-                
-              >分类</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
+                <span>文章</span>
+            </a>
         </li>
-      </ul>
-    </nav>
-  </div>
-</header><header class="mobile" id="header-mobile">
-  <div class="header-container">
-    <div class="header-wrapper">
-      <div class="header-title">
-        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-      <div class="menu-toggle" id="menu-toggle-mobile">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-    <nav>
-      <ul class="menu" id="menu-mobile"><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/posts/"
+        
+        
+        <li >
+            <a href='/categories/' >
                 
                 
-              >文章</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/categories/"
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
                 
                 
-              >分类</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/tags/"
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
                 
                 
-              >标签</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/about/"
                 
-                
-              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li></ul>
-    </nav>
-  </div>
-</header>
-<div class="search-dropdown desktop">
-  <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-  <div id="search-dropdown-mobile"></div>
-</div>
-<main class="container" page-style="normal"><aside class="toc" id="toc-auto"></aside>
+                <span>关于</span>
+            </a>
+        </li>
+        
 
-  <aside class="aside-custom">
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
     
-  </aside>
 
-  <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX">定时任务框架设计</h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>
-          <span class="post-category">included in <a href="/categories/draft/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;draft</a></span></div>
-      <div class="post-meta-line"><span title=2022-09-18&#32;20:52:42>
-            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-09-18" >2022-09-18</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;218 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
-    </div><div
-      class="content"
-      id="content"
-      
-      
-    ><p>定时任务，顾名思义，是指在某个时刻运行的任务。</p>
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/draft/" >
+                draft
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/">定时任务框架设计</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 18, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>定时任务，顾名思义，是指在某个时刻运行的任务。</p>
 <p>使用 Go 实现一个定时任务。规定定时任务的最小间隙为 1 s，则核心代码为</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">select</span> <span class="p">{</span>
@@ -275,41 +321,168 @@ type Job struct { interval uint64 // 指定时间单位下的任务执行间隔 
 </span></span><span class="line"><span class="cl">        <span class="nx">j</span><span class="p">.</span><span class="nx">lastRun</span> <span class="p">=</span> <span class="nx">now</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
-  <div class="post-info">
-    <div class="post-info-line">
-      <div class="post-info-mod">
-        <span title=2022-09-18&#32;20:52:42>Updated on 2022-09-18</span>
-      </div>
-      <div class="post-info-license "></div>
-    </div>
-    <div class="post-info-line">
-      <div class="post-info-md"></div>
-      <div class="post-info-share">
-        <span></span>
-      </div>
-    </div>
-  </div>
+</span></span></code></pre></div>
+</section>
 
-  <div class="post-info-more">
-    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/draft/">draft</a></section>
-    <section>
-      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/draft/">draft</a>
+        
     </section>
-  </div>
 
-  <div class="post-nav"><a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="prev" rel="prev" title="MySQL 数据类型"><i class="fa-solid fa-angle-left fa-fw"></i>MySQL 数据类型</a>
-      <a href="/posts/go-in-action-%E7%AC%94%E8%AE%B0/" class="next" rel="next" title="Go in action-笔记">Go in action-笔记<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.115.4">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
-        </div></div>
-  </footer></div><div class="widgets">
-  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-      <i class="fa-solid fa-arrow-up fa-fw"></i>
-    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-      <i class="fa-solid fa-comment fa-fw"></i>
-    </a>
-  </div><div id="mask"></div>
-</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Ther 的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>

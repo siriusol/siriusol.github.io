@@ -1,196 +1,218 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-    <meta name="robots" content="noodp" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <title>评论系统架构设计 - Ther 的博客</title><meta name="author" content="">
-<meta name="author-link" content="">
-<meta name="description" content="" />
-<meta name="keywords" content="评论" /><meta itemprop="name" content="评论系统架构设计">
-<meta itemprop="description" content=""><meta itemprop="datePublished" content="2022-07-16T22:05:41+08:00" />
-<meta itemprop="dateModified" content="2022-07-16T22:05:41+08:00" />
-<meta itemprop="wordCount" content="368">
-<meta itemprop="keywords" content="评论," /><meta property="og:title" content="评论系统架构设计" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-07-16T22:05:41+08:00" />
-<meta property="article:modified_time" content="2022-07-16T22:05:41+08:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="评论系统架构设计"/>
-<meta name="twitter:description" content=""/>
-<meta name="application-name" content="Ther 的博客">
-<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" /><link rel="prev" href="https://blog.ther.cool/posts/go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" /><link rel="next" href="https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "评论系统架构设计",
-    "inLanguage": "en-us",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/"
-    },"genre": "posts","keywords": "评论","wordcount":  368 ,
-    "url": "https:\/\/blog.ther.cool\/posts\/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1\/","datePublished": "2022-07-16T22:05:41+08:00","dateModified": "2022-07-16T22:05:41+08:00","publisher": {
-      "@type": "Organization",
-      "name": "Author"},"author": {
-        "@type": "Person",
-        "name": "Author"
-      },"description": ""
-  }
-  </script></head>
-  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
-  <div class="header-wrapper">
-    <div class="header-title">
-      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-    <nav>
-      <ul class="menu"><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header><header class="mobile" id="header-mobile">
-  <div class="header-container">
-    <div class="header-wrapper">
-      <div class="header-title">
-        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-      <div class="menu-toggle" id="menu-toggle-mobile">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-    <nav>
-      <ul class="menu" id="menu-mobile"><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li></ul>
-    </nav>
-  </div>
-</header>
-<div class="search-dropdown desktop">
-  <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-  <div id="search-dropdown-mobile"></div>
-</div>
-<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
-      <div class="toc-content" id="toc-content-auto"></div></aside>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=''>
+<title>评论系统架构设计</title>
 
-  <aside class="aside-custom">
-    
-  </aside>
+<link rel='canonical' href='https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/'>
 
-  <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX">评论系统架构设计</h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>
-          <span class="post-category">included in <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;系统设计</a></span></div>
-      <div class="post-meta-line"><span title=2022-07-16&#32;22:05:41>
-            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-07-16" >2022-07-16</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;368 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
-    </div><div class="details toc" id="toc-static" kept="false">
-        <div class="details-summary toc-title">
-          <span>Contents</span>
-          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='评论系统架构设计'>
+<meta property='og:description' content=''>
+<meta property='og:url' content='https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/'>
+<meta property='og:site_name' content='Ther 的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='评论' /><meta property='article:published_time' content='2022-07-16T22:05:41&#43;08:00'/><meta property='article:modified_time' content='2022-07-16T22:05:41&#43;08:00'/>
+<meta name="twitter:title" content="评论系统架构设计">
+<meta name="twitter:description" content="">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huba86cf191a79332d5cad488007211472_22918_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ther 的博客</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#功能模块">功能模块</a></li>
-    <li><a href="#架构设计">架构设计</a>
-      <ul>
-        <li><a href="#comment-service">comment-service</a></li>
-        <li><a href="#comment-admin">comment-admin</a></li>
-        <li><a href="#comment">comment</a></li>
-      </ul>
-    </li>
-    <li><a href="#存储设计">存储设计</a>
-      <ul>
-        <li><a href="#数据库设计">数据库设计</a></li>
-        <li><a href="#缓存设计">缓存设计</a></li>
-      </ul>
-    </li>
-    <li><a href="#可用性设计">可用性设计</a>
-      <ul>
-        <li><a href="#singleflight">Singleflight</a></li>
-        <li><a href="#热点">热点</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav></div>
-      </div><div
-      class="content"
-      id="content"
-      
-      
-    ><h2 id="功能模块">功能模块</h2>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/posts/' >
+                
+                
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" >
+                系统设计
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">评论系统架构设计</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 16, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="功能模块">功能模块</h2>
 <ul>
 <li>
 <p>发布评论: 支持回复楼层、楼中楼。</p>
@@ -208,14 +230,16 @@
 <h2 id="架构设计">架构设计</h2>
 <p>架构设计等同于数据设计，梳理清楚数据的走向和逻辑。尽量<strong>避免环形依赖</strong>、<strong>数据双向请求</strong>等。</p>
 <p>概览图如下：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png"
-    data-srcset="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png, https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png 1.5x, https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png"
-    title="image-20220716200753155" /></p>
+<p><img src="https://s2.loli.net/2022/07/16/UZyRVMrTXdxPNHs.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220716200753155"
+	
+	
+></p>
 <ul>
 <li>BFF: comment</li>
 </ul>
@@ -237,14 +261,16 @@
 </ul>
 <p>评论服务还会依赖一些外部 gRPC 服务，统一的平台业务逻辑在 comment BFF 层收敛，这里 account-service 主要是账号服务，filter-service 是敏感词过滤服务。</p>
 <h3 id="comment-service">comment-service</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png"
-    data-srcset="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png, https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png 1.5x, https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png"
-    title="image-20220716201722693" /></p>
+<p><img src="https://s2.loli.net/2022/07/16/eKAs2cDvXox1dbU.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220716201722693"
+	
+	
+></p>
 <p>comment-service，专注在评论数据处理(认真想下 Separation of Concerns)。</p>
 <p>最开始 comment-service 和 comment 是一层，业务和功能耦合在一起，非常不利于迭代，当然在设计层面可以考虑目录结构进行拆分，但是架构层次来说，迭代隔离也是好的。</p>
 <h4 id="读的核心逻辑">读的核心逻辑</h4>
@@ -255,26 +281,30 @@
 <p>Kafka 存在 partition 概念，可以认为是物理上的一个小队列，一个 topic 由一组 partition 组成，所以 Kafka 的吞吐模型理解为：全局并行，局部串行的生产消费方式。对于入队的消息，可以按照 <code>hash(comment_subject) % N(partitions)</code> 的方式进行分发。那么某个 partition 中的评论主题的数据一定都在一起，这样方便进行串行消费。在更新时，先更新 DB，再更新缓存。</p>
 <p>同样的，处理回源消息也是类似的思路。接收到消息后，可以先判断下缓存是否已经 rebuild，如果是则直接返回消息处理成功。</p>
 <h3 id="comment-admin">comment-admin</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png"
-    data-srcset="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png, https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png 1.5x, https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png"
-    title="image-20220716204038573" /></p>
+<p><img src="https://s2.loli.net/2022/07/16/hQOptoklDLRbeB8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220716204038573"
+	
+	
+></p>
 <p>MySQL binlog 中的数据被 Canal 中间件流式消费，获取到业务的原始 CUD 操作(没有Retrive)，需要回放写入到 es 中，但是 es 中的数据最终是面向运营体系提供服务能力，需要检索的数据维度比较多，在写入 es 前需要做一个异构的 joiner，把单表变宽，预处理好 join 逻辑，然后写入到 es中。</p>
 <p>一般来说，运营后台的检索条件都是组合的，使用 es 的好处是避免依赖 mysql 来做多条件组合检索，同时 mysql 毕竟是 OLTP 面向线上联机事务处理的。通过冗余数据的方式，将多条件组合检索需求通过其他引擎来实现。</p>
 <p>此外 es 一般会存储检索、展示 primary key 等数据，当操作编辑的时候，找到记录的 primary key，交由 comment-admin 进行运营侧的 CRUD 操作。写操作对 DB 进行操作，经由 Canal 同步至 ES，而不是直接操作写 ES。</p>
 <h3 id="comment">comment</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png"
-    data-srcset="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png, https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png 1.5x, https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png"
-    title="image-20220716204817745" /></p>
+<p><img src="https://s2.loli.net/2022/07/16/5VEWsuA2yh1qIDr.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220716204817745"
+	
+	
+></p>
 <p>comment 作为 BFF，是面向端、平台、业务组合的服务。所以平台扩展的能力都在 comment 服务实现，方便以统一的接口形式提供平台化的能力。</p>
 <ul>
 <li>
@@ -289,14 +319,16 @@
 </ul>
 <h2 id="存储设计">存储设计</h2>
 <h3 id="数据库设计">数据库设计</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png"
-    data-srcset="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png, https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png 1.5x, https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png"
-    title="image-20220716221909268" /></p>
+<p><img src="https://s2.loli.net/2022/07/16/u4PwJjbIzds2YLV.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220716221909268"
+	
+	
+></p>
 <h4 id="数据写入">数据写入</h4>
 <p>事务更新 comment_subject，comment_index，comment_content 三张表，其中 content 属于非强制需要一致性考虑的。可以先写入 content，之后事务更新其他表。即便 content 先成功，后续失败，也仅存在一条 ghost 数据。</p>
 <h4 id="数据读取">数据读取</h4>
@@ -304,27 +336,31 @@
 <p>因为产品形态上只存在二级列表，因此只需要迭代查询两次即可。对于嵌套层次多的，产品上，可以通过二次点击支持。</p>
 <p>Tips: 是不是可以使用 Graph 存储？DGraph、HugeGraph 类似的图存储思路。</p>
 <h4 id="索引与内容分离">索引与内容分离</h4>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png"
-    data-srcset="https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png, https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png 1.5x, https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png"
-    title="image-20220717182945045" /></p>
+<p><img src="https://s2.loli.net/2022/07/30/bkxO2q6iTB5Wnyc.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220717182945045"
+	
+	
+></p>
 <p>comment_index: 评论楼层的索引组织表，实际并不包含内容。
 comment_content: 评论内容的表，包含评论的具体内容。其中 comment_index 的 id 字段和 comment_content 是 1 对 1 的关系，这里面包含几种设计思想。</p>
 <p>表都有主键，即 cluster index，是物理组织形式存放的，comment_content 没有 id，是为了减少一次二级索引查找，直接基于主键检索，同时 comment_id 在写入要尽可能的顺序自增。</p>
 <p>索引、内容分离，方便 MySQL datapage 缓存更多的 row ，如果和 context 耦合，会导致更大的  IO。长远来看 content 信息可以直接使用 KV storage 存储。</p>
 <h3 id="缓存设计">缓存设计</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png"
-    data-srcset="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png, https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png 1.5x, https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png"
-    title="image-20220717225941315" /></p>
+<p><img src="https://s2.loli.net/2022/07/17/7ArYIHQ21il6Gtg.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220717225941315"
+	
+	
+></p>
 <p>comment_subject_cache: 对应主题的缓存，value 使用 protobuf 序列化的方式存入。早期使用 memcache 来进行缓存，因为 Redis 早期单线程模型，吞吐能力不高。</p>
 <p>comment_index_cache: 使用 Redis sortedset 进行索引的缓存，索引即数据的组织顺序，而非数据内容。参考过百度的贴吧，他们使用自己研发的拉链存储来组织索引，我认为 mysql 作为主力存储，利用 redis 来做加速完全足够，因为 cache miss 的构建，我们前面讲过使用 kafka 的消费者中处理，预加载少量数据，通过增量加载的方式逐渐预热填充缓存，而 redis sortedset skiplist 的实现，可以做到 <code>O(logN) + O(M)</code> 的时间复杂度，效率很高。</p>
 <p>sorted set 是要增量追加的，因此必须判定 key 存在，才能 zdd。</p>
@@ -336,14 +372,16 @@ comment_content: 评论内容的表，包含评论的具体内容。其中 comme
 <p>增量加载 + lazy 加载。</p>
 <h2 id="可用性设计">可用性设计</h2>
 <h3 id="singleflight">Singleflight</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png"
-    data-srcset="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png, https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png 1.5x, https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png"
-    title="image-20220717230755891" /></p>
+<p><img src="https://s2.loli.net/2022/07/17/y4qRxKWImXkAvpg.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220717230755891"
+	
+	
+></p>
 <p>对于热门的主题，如果存在缓存穿透的情况，会导致大量的同进程、跨进程的数据回源到存储层，可能会引起存储过载的情况，如何只交给同进程内，一个人去做加载存储？</p>
 <p>使用归并回源的思路:</p>
 <p><code>https://pkg.go.dev/golang.org/x/sync/singleflight</code></p>
@@ -354,50 +392,179 @@ comment_content: 评论内容的表，包含评论的具体内容。其中 comme
 <p>分布式锁不好做，且太重。</p>
 </blockquote>
 <h3 id="热点">热点</h3>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png"
-    data-srcset="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png, https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png 1.5x, https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png"
-    title="image-20220717231201889" /></p>
+<p><img src="https://s2.loli.net/2022/07/17/sHDIyce7glU1V5E.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20220717231201889"
+	
+	
+></p>
 <p>流量热点是因为突然热门的主题，被高频次的访问，因为底层的 cache 设计，一般是按照主题 key 进行一致性 hash 来进行分片，但是热点 key 一定命中某一个节点，这时候 remote cache 可能会变为瓶颈，因此做 cache 的升级 local cache 是有必要的，我们一般使用单进程自适应发现热点的思路，附加一个短时的 ttl local cache，可以在进程内吞掉大量的读请求。</p>
-<p>在内存中使用 hashmap 统计每个 key 的访问频次，这里可以使用滑动窗口统计，即每个窗口中，维护一个 hashmap，之后统计所有未过去的 bucket，汇总所有 key 的数据。之后使用小堆计算 TopK 的数据，自动进行热点识别。</p></div><div class="post-footer" id="post-footer">
-  <div class="post-info">
-    <div class="post-info-line">
-      <div class="post-info-mod">
-        <span title=2022-07-16&#32;22:05:41>Updated on 2022-07-16</span>
-      </div>
-      <div class="post-info-license "></div>
-    </div>
-    <div class="post-info-line">
-      <div class="post-info-md"></div>
-      <div class="post-info-share">
-        <span></span>
-      </div>
-    </div>
-  </div>
+<p>在内存中使用 hashmap 统计每个 key 的访问频次，这里可以使用滑动窗口统计，即每个窗口中，维护一个 hashmap，之后统计所有未过去的 bucket，汇总所有 key 的数据。之后使用小堆计算 TopK 的数据，自动进行热点识别。</p>
+</section>
 
-  <div class="post-info-more">
-    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E8%AF%84%E8%AE%BA/">评论</a></section>
-    <section>
-      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AF%84%E8%AE%BA/">评论</a>
+        
     </section>
-  </div>
 
-  <div class="post-nav"><a href="/posts/go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="prev" rel="prev" title="Go 并发编程 内存模型"><i class="fa-solid fa-angle-left fa-fw"></i>Go 并发编程 内存模型</a>
-      <a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="next" rel="next" title="MySQL 数据类型">MySQL 数据类型<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.115.4">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
-        </div></div>
-  </footer></div><div class="widgets">
-  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-      <i class="fa-solid fa-arrow-up fa-fw"></i>
-    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-      <i class="fa-solid fa-comment fa-fw"></i>
-    </a>
-  </div><div id="mask"></div>
-</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Ther 的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>

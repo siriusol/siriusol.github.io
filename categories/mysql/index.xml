@@ -1,18 +1,76 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-  <channel>
-    <title>MySQL - Category - Ther 的博客</title>
-    <link>https://blog.ther.cool/categories/mysql/</link>
-    <description>MySQL - Category - Ther 的博客</description>
-    <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</lastBuildDate><atom:link href="https://blog.ther.cool/categories/mysql/" rel="self" type="application/rss+xml" /><item>
-  <title>MySQL varchar 的最大长度</title>
-  <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</link>
-  <pubDate>Thu, 03 Feb 2022 19:17:31 &#43;0800</pubDate>
-  <author>Author</author>
-  <guid>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</guid>
-  <description><![CDATA[备注：全文示例皆在 8.0.17 版本下进行。
-在MySQL官方定义中，常用的 COMPACT、DYNAMIC行模式下，varchar 的最大长度并不是固定数值，取决于以下限制：
-行长度限制； 编码长度限制； 存储限制。 行长度限制 MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：
-1118 - Row size too large. The maximum row size for the used table type, not counting BLOBs, is 65535. This includes storage overhead, check the manual. You have to change some columns to TEXT or BLOBs 编码长度限制 每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：
-字符集 每个字符占用存储空间（单位：字节） latin1 1 GBK 2 UTF8 3 UTF8MB4 4 存储限制 根据限制 1，每行最多能存储 65535 字节的数据，这包括：]]></description>
-</item></channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MySQL on Ther 的博客</title>
+        <link>https://blog.ther.cool/categories/mysql/</link>
+        <description>Recent content in MySQL on Ther 的博客</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Thu, 03 Feb 2022 19:17:31 +0800</lastBuildDate><atom:link href="https://blog.ther.cool/categories/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MySQL varchar 的最大长度</title>
+        <link>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</link>
+        <pubDate>Thu, 03 Feb 2022 19:17:31 +0800</pubDate>
+        
+        <guid>https://blog.ther.cool/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/</guid>
+        <description>&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;：全文示例皆在 8.0.17 版本下进行。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;在MySQL官方定义中，常用的 &lt;code&gt;COMPACT&lt;/code&gt;、&lt;code&gt;DYNAMIC&lt;/code&gt;行模式下，varchar 的最大长度并不是固定数值，取决于以下限制：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;行长度限制；&lt;/li&gt;
+&lt;li&gt;编码长度限制；&lt;/li&gt;
+&lt;li&gt;存储限制。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;行长度限制&#34;&gt;行长度限制&lt;/h2&gt;
+&lt;p&gt;MySQL 要求一行的定义长度不能超过 65535 字节（约 64 KB）。若定义长度超过这个值，则提示：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-mysql&#34; data-lang=&#34;mysql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mi&#34;&gt;1118&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Row&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;too&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;large&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;The&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;maximum&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;row&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;the&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;used&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;table&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;not&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;counting&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BLOBs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;is&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;65535&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;This&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;includes&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;storage&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;overhead&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;the&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;manual&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;You&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;have&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;change&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;some&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;columns&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;TEXT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;or&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BLOBs&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编码长度限制&#34;&gt;编码长度限制&lt;/h2&gt;
+&lt;p&gt;每个字符的实际占据的空间与字符所使用的字符集相关。下表列举的一些例子：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字符集&lt;/th&gt;
+&lt;th&gt;每个字符占用存储空间（单位：字节）&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;latin1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GBK&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UTF8&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UTF8MB4&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;存储限制&#34;&gt;存储限制&lt;/h2&gt;
+&lt;p&gt;根据限制 1，每行最多能存储 65535 字节的数据，这包括：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有字段的长度；&lt;/li&gt;
+&lt;li&gt;每个变长字段的长度，当存储的长度小于 255 字节时，需要 1 字节记录，大于 255 字节时，需要 2 字节；&lt;/li&gt;
+&lt;li&gt;NULL 标识位的累计长度。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中，NULL 标记位用于表示某个字段是否允许为 NULL。每个字段使用 1 个 bit 位来表示。每 8 个标记组成一个字段。若一行中有 N 个字段，则一行中用于 NULL 标记位所消耗的空间计算公式为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;或者这样表示：⌈ N / 8 ⌉ （向上取整）。&lt;/p&gt;
+&lt;h2 id=&#34;长度计算&#34;&gt;长度计算&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;最大长度(字符数) = （&lt;code&gt;行存储最大字节数&lt;/code&gt; - &lt;code&gt;NULL标识列占用字节数&lt;/code&gt; - &lt;code&gt;长度标识字节数&lt;/code&gt;） / &lt;code&gt;字符集单字符最大字节数&lt;/code&gt;&lt;/strong&gt;。有余数时向下取整。&lt;/p&gt;
+&lt;p&gt;长度标识位表示的是字节数。大于 255 后使用两字节，是因为按照可能的数据大小，分为 0~255(2^8)、256~65535(2^16)，分别对应 1 字节和 2 字节。&lt;/p&gt;
+&lt;p&gt;根据字段声明的字符长度，计算可能的字节数，再决定长度标志的字节数。如 VARCHAR(100)，字符集为 UTF8，可能的字节数为 300，则长度标识为 2 字节。&lt;/p&gt;
+&lt;p&gt;长度标志位只是存储开销，不影响长度约束。长度约束的是数据的字符数，允许的最大字符数与字符集有关。&lt;/p&gt;
+&lt;p&gt;如列指定字符集为 UTF8、每个字符最大可占用 3 个字节，行最大长度为 65535 字节，那么该列可设置的最大列大小为65535 ÷ 3 ≈ 21844（向下取整）。&lt;/p&gt;
+&lt;p&gt;同理如果是 UTF8MB4，单字符最大占 4 个字节，可设置最大列大小为 65535 ÷ 4 ≈ 16383（向下取整）。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

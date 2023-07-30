@@ -1,209 +1,227 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-    <meta name="robots" content="noodp" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <title>MySQL 数据类型 - Ther 的博客</title><meta name="author" content="">
-<meta name="author-link" content="">
-<meta name="description" content="1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
 类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。
-整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。" />
-<meta name="keywords" content="MySQL" /><meta itemprop="name" content="MySQL 数据类型">
-<meta itemprop="description" content="1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
+整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。'>
+<title>MySQL 数据类型</title>
+
+<link rel='canonical' href='https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='MySQL 数据类型'>
+<meta property='og:description' content='1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
 类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。
-整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。"><meta itemprop="datePublished" content="2022-08-07T18:18:27+08:00" />
-<meta itemprop="dateModified" content="2022-08-07T18:18:27+08:00" />
-<meta itemprop="wordCount" content="713">
-<meta itemprop="keywords" content="MySQL," /><meta property="og:title" content="MySQL 数据类型" />
-<meta property="og:description" content="1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
-类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。
-整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-08-07T18:18:27+08:00" />
-<meta property="article:modified_time" content="2022-08-07T18:18:27+08:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="MySQL 数据类型"/>
+整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。'>
+<meta property='og:url' content='https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/'>
+<meta property='og:site_name' content='Ther 的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='MySQL' /><meta property='article:published_time' content='2022-08-07T18:18:27&#43;08:00'/><meta property='article:modified_time' content='2022-08-07T18:18:27&#43;08:00'/>
+<meta name="twitter:title" content="MySQL 数据类型">
 <meta name="twitter:description" content="1. 数字类型 整型类型 MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：
 类型 占用空间（字节） 最小值~最大值 [signed] 最小值~最大值 [unsigned] TINYINT 1 [-128, 127] [0, 255] SMALLINT 2 [-32768, 32767] [0, 65535] MEDIUMINT 3 [-8388608, 8388607] [0, 16777215] INT 4 [-2147483648, 2147483647] [0, 4294967295] BIGINT 8 [-9223372036854775808, 9223372036854775807] [0, 18446744073709551615] 在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。
-整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。"/>
-<meta name="application-name" content="Ther 的博客">
-<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" /><link rel="prev" href="https://blog.ther.cool/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" /><link rel="next" href="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "MySQL 数据类型",
-    "inLanguage": "en-us",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.ther.cool\/posts\/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B\/"
-    },"genre": "posts","keywords": "MySQL","wordcount":  713 ,
-    "url": "https:\/\/blog.ther.cool\/posts\/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B\/","datePublished": "2022-08-07T18:18:27+08:00","dateModified": "2022-08-07T18:18:27+08:00","publisher": {
-      "@type": "Organization",
-      "name": "Author"},"author": {
-        "@type": "Person",
-        "name": "Author"
-      },"description": ""
-  }
-  </script></head>
-  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
-  <div class="header-wrapper">
-    <div class="header-title">
-      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-    <nav>
-      <ul class="menu"><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header><header class="mobile" id="header-mobile">
-  <div class="header-container">
-    <div class="header-wrapper">
-      <div class="header-title">
-        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-      <div class="menu-toggle" id="menu-toggle-mobile">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-    <nav>
-      <ul class="menu" id="menu-mobile"><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li></ul>
-    </nav>
-  </div>
-</header>
-<div class="search-dropdown desktop">
-  <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-  <div id="search-dropdown-mobile"></div>
-</div>
-<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
-      <div class="toc-content" id="toc-content-auto"></div></aside>
+整型类型与自增设计 整型类型最常见的就是在业务中用来表示某件物品的数量。例如上述表的销售数量，或电商中的库存数量、购买次数等。另一个常见且重要的用法是作为表的主键，即用来唯一标识一行数据。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
 
-  <aside class="aside-custom">
-    
-  </aside>
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
 
-  <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX">MySQL 数据类型</h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>
-          <span class="post-category">included in <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;学习笔记</a></span></div>
-      <div class="post-meta-line"><span title=2022-08-07&#32;18:18:27>
-            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-08-07" >2022-08-07</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;713 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
-    </div><div class="details toc" id="toc-static" kept="false">
-        <div class="details-summary toc-title">
-          <span>Contents</span>
-          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huba86cf191a79332d5cad488007211472_22918_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ther 的博客</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-数字类型">1. 数字类型</a>
-      <ul>
-        <li><a href="#整型类型">整型类型</a></li>
-        <li><a href="#整型类型与自增设计">整型类型与自增设计</a></li>
-        <li><a href="#浮点类型和高精度型">浮点类型和高精度型</a></li>
-        <li><a href="#资金字段设计">资金字段设计</a></li>
-      </ul>
-    </li>
-    <li><a href="#2-字符串类型">2. 字符串类型</a>
-      <ul>
-        <li><a href="#char-和-varchar">CHAR 和 VARCHAR</a></li>
-        <li><a href="#字符集">字符集</a></li>
-        <li><a href="#排序规则">排序规则</a></li>
-        <li><a href="#修改字符集">修改字符集</a></li>
-      </ul>
-    </li>
-    <li><a href="#3-日期类型">3. 日期类型</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#4-非结构存储json">4. 非结构存储：JSON</a></li>
-  </ul>
-</nav></div>
-      </div><div
-      class="content"
-      id="content"
-      
-      
-    ><h2 id="1-数字类型">1. 数字类型</h2>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/posts/' >
+                
+                
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" >
+                学习笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/mysql-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">MySQL 数据类型</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 07, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-数字类型">1. 数字类型</h2>
 <h3 id="整型类型">整型类型</h3>
 <p>MySQL 数据库支持 SQL 标准支持的整型类型：INT、SMALLINT。此外，MySQL 数据库也支持诸如 TINYINT、MEDIUMINT 和 BIGINT 整型类型（表 1 显示了各种整型所占用的存储空间及取值范围）：</p>
-<table>
+<div class="table-wrapper"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -244,7 +262,7 @@
 <td>[0, 18446744073709551615]</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <!-- raw HTML omitted -->
 <p>在整型类型中，有 signed 和 unsigned 属性，其表示的是整型的取值范围，默认为 signed。在设计时不建议刻意去用 unsigned 属性，因为在做一些数据分析时，SQL 可能返回的结果并不是想要得到的结果。例如 MySQL 要求 unsigned 数值相减之后依然为 unsigned，否则就会报错。为了避免这个错误，需要对数据库参数 sql_mode 设置为 NO_UNSIGNED_SUBTRACTION，允许相减的结果为 signed。</p>
 <h3 id="整型类型与自增设计">整型类型与自增设计</h3>
@@ -345,20 +363,8 @@
 <li>推荐日期类型使用 DATETIME，而不是 TIMESTAMP 和 INT 类型；</li>
 </ul>
 <h2 id="4-非结构存储json">4. 非结构存储：JSON</h2>
-<p>JSON（JavaScript Object Notation）主要用于互联网应用服务之间的数据交换。MySQL 支持 <a
-  href="https://tools.ietf.org/html/rfc7159?fileGuid=xxQTRXtVcqtHK6j8"
-  
-  
-    
-    
-    target="_blank"
-  
-  
-    rel="external nofollow noopener noreffer"
-  
-  
-  
->RFC 7159 </a>定义的 JSON 规范，主要有 <strong>JSON 对象</strong>和 <strong>JSON 数组</strong>两种类型。</p>
+<p>JSON（JavaScript Object Notation）主要用于互联网应用服务之间的数据交换。MySQL 支持 <a class="link" href="https://tools.ietf.org/html/rfc7159?fileGuid=xxQTRXtVcqtHK6j8"  target="_blank" rel="noopener"
+    >RFC 7159 </a>定义的 JSON 规范，主要有 <strong>JSON 对象</strong>和 <strong>JSON 数组</strong>两种类型。</p>
 <p>JSON 类型从表面上来看像是字段串类型，但本质上 JSON 是一种新的类型，有自己的存储格式，还能在每个对应的字段上创建索引，做特定的优化，这是传统字段串无法实现的。JSON 类型的另一个好处是<strong>无须预定义字段</strong>，字段可以无限扩展。而传统关系型数据库的列都需预先定义，想要扩展需要执行 ALTER TABLE &hellip; ADD COLUMN &hellip; 这样比较重的操作。</p>
 <p>需要注意是，JSON 类型是从 MySQL 5.7 版本开始支持的功能，而 8.0 版本解决了更新 JSON 的日志性能瓶颈。如果要在生产环境中使用 JSON 数据类型，强烈推荐使用 MySQL 8.0 版本。</p>
 <p>在数据库中，<strong>JSON 类型比较适合存储一些修改较少、相对静态的数据</strong>。</p>
@@ -389,41 +395,190 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">uk_idx_cellphone</span><span class="p">(</span><span class="n">cellphone</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
 </span></span></span></code></pre></div><p>MySQL 8.0.17 版本开始支持 Multi-Valued Indexes，用于在 JSON 数组上创建索引，并通过函数 member of、json_contains、json_overlaps 来快速检索索引数据。</p>
-</div><div class="post-footer" id="post-footer">
-  <div class="post-info">
-    <div class="post-info-line">
-      <div class="post-info-mod">
-        <span title=2022-08-07&#32;18:18:27>Updated on 2022-08-07</span>
-      </div>
-      <div class="post-info-license "></div>
-    </div>
-    <div class="post-info-line">
-      <div class="post-info-md"></div>
-      <div class="post-info-share">
-        <span></span>
-      </div>
-    </div>
-  </div>
 
-  <div class="post-info-more">
-    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/mysql/">MySQL</a></section>
-    <section>
-      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mysql/">MySQL</a>
+        
     </section>
-  </div>
 
-  <div class="post-nav"><a href="/posts/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="prev" rel="prev" title="评论系统架构设计"><i class="fa-solid fa-angle-left fa-fw"></i>评论系统架构设计</a>
-      <a href="/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" class="next" rel="next" title="定时任务框架设计">定时任务框架设计<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.115.4">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
-        </div></div>
-  </footer></div><div class="widgets">
-  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-      <i class="fa-solid fa-arrow-up fa-fw"></i>
-    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-      <i class="fa-solid fa-comment fa-fw"></i>
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/posts/mysql-varchar-%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MySQL varchar 的最大长度</h2>
+        </div>
     </a>
-  </div><div id="mask"></div>
-</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Ther 的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>

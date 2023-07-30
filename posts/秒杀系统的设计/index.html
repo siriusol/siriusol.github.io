@@ -1,14 +1,7 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-    <meta name="robots" content="noodp" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <title>秒杀系统的设计 - Ther 的博客</title><meta name="author" content="">
-<meta name="author-link" content="">
-<meta name="description" content="秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
 秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
 并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
 并发写的处理原则也一样，它要求我们在数据库层面独立出来一个库，做特殊的处理。
@@ -26,9 +19,13 @@
 例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
 https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
 路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
-通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。" />
-<meta name="keywords" content="秒杀" /><meta itemprop="name" content="秒杀系统的设计">
-<meta itemprop="description" content="秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
+通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。'>
+<title>秒杀系统的设计</title>
+
+<link rel='canonical' href='https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='秒杀系统的设计'>
+<meta property='og:description' content='秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
 秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
 并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
 并发写的处理原则也一样，它要求我们在数据库层面独立出来一个库，做特殊的处理。
@@ -46,35 +43,11 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
 https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
 路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
-通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。"><meta itemprop="datePublished" content="2020-11-21T22:26:24+08:00" />
-<meta itemprop="dateModified" content="2020-11-21T22:26:24+08:00" />
-<meta itemprop="wordCount" content="1339">
-<meta itemprop="keywords" content="秒杀," /><meta property="og:title" content="秒杀系统的设计" />
-<meta property="og:description" content="秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
-秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
-并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
-并发写的处理原则也一样，它要求我们在数据库层面独立出来一个库，做特殊的处理。
-另外，我们还要针对秒杀系统做一些保护，针对意料之外的情况设计兜底方案，以防止最坏的情况发生。
-从一个架构师的角度来看，要想打造并维护一个超大流量并发读写、高性能、高可用的系统，在整个用户请求路径上从浏览器到服务端我们要遵循几个原则：
-保证用户请求的数据尽量少 请求数尽量少 路径尽量短 依赖尽量少 不要有单点 秒杀的整体架构可以概括为“稳、准、快”几个关键字。
-“稳”，就是整个系统架构要满足高可用，流量符合预期时肯定要稳定，就是超出预期时也同样不能掉链子，你要保证秒杀活动顺利完成，即秒杀商品顺利地卖出去，这个是最基本的前提。
-“准”，就是秒杀 10 台 iPhone，那就只能成交 10 台，多一台少一台都不行。一旦库存不对，那平台就要承担损失，所以“准”就是要求保证数据的一致性。
-“快”，它就是说系统的性能要足够高，否则你怎么支撑这么大的流量呢？不光是服务端要做极致的性能优化，而且在整个请求链路上都要做协同的优化，每个地方快一点，整个系统就完美了。
-所以从技术角度上看“稳、准、快”，就对应了我们架构上的高可用、一致性和高性能的要求。
-高性能。 秒杀涉及大量的并发读和并发写，因此支持高并发访问这点非常关键。将从设计数据的动静分离方案、热点的发现与隔离、请求的削峰与分层过滤、服务端的极致优化这 4 个方面优化。 一致性。 秒杀中商品减库存的实现方式同样关键。可想而知，有限数量的商品在同一时刻被很多倍的请求同时来减库存，减库存又分为“拍下减库存”“付款减库存”以及预扣库存等几种，在大并发更新的过程中都要保证数据的准确性。 高可用。 虽然有很多极致的优化思路，但现实中总难免出现一些考虑不到的情况，所以要保证系统的高可用和正确性，我们还要设计一个 PlanB 来兜底，以便在最坏情况发生时仍然能够从容应对。 1. 架构原则：“4 要 1 不要” 数据要尽量少 所谓“数据要尽量少”，首先是指用户请求的数据能少就少。请求的数据包括上传给系统的数据和系统返回给用户的数据（通常就是网页）。
-为什么“数据要尽量少”呢？因为首先这些数据在网络上传输需要时间，其次不管是请求数据还是返回数据都需要服务器做处理，而服务器在写网络时通常都要做压缩和字符编码，这些都非常消耗 CPU，所以减少传输的数据量可以显著减少 CPU 的使用。例如，我们可以简化秒杀页面的大小，去掉不必要的页面装饰效果等等。
-其次，“数据要尽量少”还要求系统依赖的数据能少就少，包括系统完成某些业务逻辑需要读取和保存的数据，这些数据一般是和后台服务以及数据库打交道的。调用其他服务会涉及数据的序列化和反序列化，而这也是 CPU 的一大杀手，同样也会增加延时。而且，数据库本身也容易成为一个瓶颈，所以和数据库打交道越少越好，数据越简单、越小则越好。
-请求数要尽量少 用户请求的页面返回后，浏览器渲染这个页面还要包含其他的额外请求，比如说，这个页面依赖的 CSS / JavaScript、图片，以及 Ajax 请求等等都定义为“额外请求”，这些额外请求应该尽量少。因为浏览器每发出一个请求都多少会有一些消耗，例如建立连接要做三次握手，有的时候有页面依赖或者连接数限制，一些请求（例如 JavaScript）还需要串行加载等。另外，如果不同请求的域名不一样的话，还涉及这些域名的 DNS 解析，可能会耗时更久。所以减少请求数可以显著减少以上这些因素导致的资源消耗。
-例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
-https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
-路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
-通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-11-21T22:26:24+08:00" />
-<meta property="article:modified_time" content="2020-11-21T22:26:24+08:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="秒杀系统的设计"/>
+通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。'>
+<meta property='og:url' content='https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/'>
+<meta property='og:site_name' content='Ther 的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='秒杀' /><meta property='article:published_time' content='2020-11-21T22:26:24&#43;08:00'/><meta property='article:modified_time' content='2020-11-21T22:26:24&#43;08:00'/>
+<meta name="twitter:title" content="秒杀系统的设计">
 <meta name="twitter:description" content="秒杀系统本质上就是一个满足高并发、高性能和高可用的分布式系统。
 秒杀其实主要解决两个问题，一个是并发读，一个是并发写。
 并发读的核心优化理念是尽量减少用户到服务端来“读”数据，或者让他们读更少的数据；
@@ -93,215 +66,207 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 例如，减少请求数最常用的一个实践就是合并 CSS 和 JavaScript 文件，把多个 JavaScript 文件合并成一个文件，在 URL 中用逗号隔开，如：
 https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/index.xtpl.js,module-focus/index.xtpl.js 这种方式在服务端仍然是单个文件各自存放，只是服务端会有一个组件解析这个 URL，然后动态把这些文件合并起来一起返回。
 路径要尽量短 所谓“路径”，就是用户发出请求到返回数据这个过程中，需求经过的中间的节点数。
-通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。"/>
-<meta name="application-name" content="Ther 的博客">
-<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/" /><link rel="prev" href="https://blog.ther.cool/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/" /><link rel="next" href="https://blog.ther.cool/posts/%E6%B5%8B%E8%AF%95/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "秒杀系统的设计",
-    "inLanguage": "en-us",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.ther.cool\/posts\/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1\/"
-    },"genre": "posts","keywords": "秒杀","wordcount":  1339 ,
-    "url": "https:\/\/blog.ther.cool\/posts\/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1\/","datePublished": "2020-11-21T22:26:24+08:00","dateModified": "2020-11-21T22:26:24+08:00","publisher": {
-      "@type": "Organization",
-      "name": "Author"},"author": {
-        "@type": "Person",
-        "name": "Author"
-      },"description": ""
-  }
-  </script></head>
-  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
-  <div class="header-wrapper">
-    <div class="header-title">
-      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-    <nav>
-      <ul class="menu"><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header><header class="mobile" id="header-mobile">
-  <div class="header-container">
-    <div class="header-wrapper">
-      <div class="header-title">
-        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-      <div class="menu-toggle" id="menu-toggle-mobile">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-    <nav>
-      <ul class="menu" id="menu-mobile"><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li></ul>
-    </nav>
-  </div>
-</header>
-<div class="search-dropdown desktop">
-  <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-  <div id="search-dropdown-mobile"></div>
-</div>
-<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
-      <div class="toc-content" id="toc-content-auto"></div></aside>
+通常，这些节点可以表示为一个系统或者一个新的 Socket 连接（比如代理服务器只是创建一个新的 Socket 连接来转发请求）。每经过一个节点，一般都会产生一个新的 Socket 连接。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
 
-  <aside class="aside-custom">
-    
-  </aside>
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
 
-  <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX">秒杀系统的设计</h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>
-          <span class="post-category">included in <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;系统设计</a></span></div>
-      <div class="post-meta-line"><span title=2020-11-21&#32;22:26:24>
-            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21" >2020-11-21</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;1339 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
-    </div><div class="details toc" id="toc-static" kept="false">
-        <div class="details-summary toc-title">
-          <span>Contents</span>
-          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huba86cf191a79332d5cad488007211472_22918_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ther 的博客</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-架构原则4-要-1-不要">1. 架构原则：“4 要 1 不要”</a>
-      <ul>
-        <li><a href="#数据要尽量少">数据要尽量少</a></li>
-        <li><a href="#请求数要尽量少">请求数要尽量少</a></li>
-        <li><a href="#路径要尽量短">路径要尽量短</a></li>
-        <li><a href="#依赖要尽量少">依赖要尽量少</a></li>
-        <li><a href="#不要有单点">不要有单点</a></li>
-        <li><a href="#不同场景下的不同架构案例">不同场景下的不同架构案例</a></li>
-      </ul>
-    </li>
-    <li><a href="#2-动静分离">2. 动静分离</a>
-      <ul>
-        <li><a href="#何为动静数据">何为动静数据</a></li>
-        <li><a href="#如何做动静分离的改造">如何做动静分离的改造</a></li>
-        <li><a href="#动静分离的几种架构方案">动静分离的几种架构方案</a></li>
-      </ul>
-    </li>
-    <li><a href="#3-处理系统热点数据">3. 处理系统热点数据</a>
-      <ul>
-        <li><a href="#为什么要关注热点">为什么要关注热点</a></li>
-        <li><a href="#什么是热点">什么是“热点”</a></li>
-        <li><a href="#发现热点数据">发现热点数据</a></li>
-        <li><a href="#处理热点数据">处理热点数据</a></li>
-      </ul>
-    </li>
-    <li><a href="#4-流量削峰">4. 流量削峰</a>
-      <ul>
-        <li><a href="#为什么要削峰">为什么要削峰</a></li>
-        <li><a href="#排队">排队</a></li>
-        <li><a href="#答题">答题</a></li>
-        <li><a href="#分层过滤">分层过滤</a></li>
-        <li><a href="#总结">总结</a></li>
-      </ul>
-    </li>
-    <li><a href="#5-性能优化">5. 性能优化</a>
-      <ul>
-        <li><a href="#影响性能的因素">影响性能的因素</a></li>
-        <li><a href="#如何发现瓶颈">如何发现瓶颈</a></li>
-        <li><a href="#如何优化系统">如何优化系统</a></li>
-      </ul>
-    </li>
-    <li><a href="#6-减库存逻辑">6. 减库存逻辑</a>
-      <ul>
-        <li><a href="#减库存有哪几种方式">减库存有哪几种方式</a></li>
-        <li><a href="#减库存可能存在的问题">减库存可能存在的问题</a></li>
-        <li><a href="#大型秒杀中如何减库存">大型秒杀中如何减库存？</a></li>
-        <li><a href="#秒杀减库存的极致优化">秒杀减库存的极致优化</a></li>
-      </ul>
-    </li>
-    <li><a href="#7-plan-b兜底方案">7. Plan B：兜底方案</a>
-      <ul>
-        <li><a href="#高可用建设应该从哪里着手">高可用建设应该从哪里着手</a></li>
-        <li><a href="#降级">降级</a></li>
-        <li><a href="#限流">限流</a></li>
-        <li><a href="#拒绝服务">拒绝服务</a></li>
-        <li><a href="#总结-2">总结</a></li>
-      </ul>
-    </li>
-    <li><a href="#8-一些问题">8. 一些问题</a></li>
-  </ul>
-</nav></div>
-      </div><div
-      class="content"
-      id="content"
-      
-      
-    ><p>秒杀系统本质上就是一个满足<strong>高并发</strong>、<strong>高性能</strong>和<strong>高可用</strong>的<strong>分布式系统</strong>。</p>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/posts/' >
+                
+                
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" >
+                系统设计
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">秒杀系统的设计</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 21, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    7 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>秒杀系统本质上就是一个满足<strong>高并发</strong>、<strong>高性能</strong>和<strong>高可用</strong>的<strong>分布式系统</strong>。</p>
 <p>秒杀其实主要解决两个问题，一个是<strong>并发读</strong>，一个是<strong>并发写</strong>。</p>
 <ul>
 <li>
@@ -370,14 +335,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <li><strong>增加秒杀答题</strong>，防止有秒杀器抢单。</li>
 </ol>
 <p>此时的系统架构变成了下图这个样子。最重要的就是，秒杀详情成为了一个独立的新系统，另外核心的一些数据放到了缓存（Cache）中，其他的关联系统也都以独立集群的方式进行部署。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg, https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg 1.5x, https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg"
-    title="https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/2pUyQZhVG8B4YFH.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>然而这个架构仍然支持不了超过 100w/s 的请求量，所以为了进一步提升秒杀系统的性能，又对架构做进一步升级，比如：</p>
 <ol>
 <li>对<strong>页面</strong>进行彻底的<strong>动静分离</strong>，使得用户秒杀时不需要刷新整个页面，而只需要点击抢宝按钮，借此把页面刷新的数据降到最少；</li>
@@ -395,14 +360,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>主动失效：周期性地从设置了失效时间的数据中选择一部分失效的数据删除。</p>
 </blockquote>
 <p>经过这些优化，系统架构变成了下图中的样子。在这里，对页面进行了进一步的<strong>静态化</strong>，秒杀过程中不需要刷新整个页面，而只需要向服务端请求很少的动态数据。而且，最关键的详情和交易系统都增加了<strong>本地缓存</strong>，来提前缓存秒杀商品的信息，<strong>热点数据库也做了独立部署</strong>，等等。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg, https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg 1.5x, https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg"
-    title="https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/URivWHnoEXJfL7e.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>从前面的几次升级来看，其实越到后面需要定制的地方越多，也就是越“<strong>不通用</strong>”。例如，把秒杀商品缓存在每台机器的内存中，这种方式显然不适合太多的商品同时进行秒杀的情况，因为单机的内存始终有限。<strong>所以要取得极致的性能，就要在其他地方（比如，通用性、易用性、成本等方面）有所牺牲</strong>。</p>
 <h2 id="2-动静分离">2. 动静分离</h2>
 <p><strong>秒杀的场景中，对于系统的要求其实就三个字：快、准、稳</strong>。</p>
@@ -421,33 +386,21 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>那么怎样对静态数据做缓存呢？</p>
 <p><strong>第一，应该把静态数据缓存到离用户最近的地方</strong>。静态数据就是那些相对不会变化的数据，因此我们可以把它们缓存起来。缓存到哪里呢？常见的就三种：用户<strong>浏览器</strong>里、<strong>CDN</strong> 上或者在<strong>服务端的 Cache</strong> 中。</p>
 <p><strong>第二，静态化改造就是要直接缓存 HTTP 连接</strong>。相较于普通的数据缓存而言，你肯定还听过系统的静态化改造。静态化改造是<strong>直接缓存 HTTP 连接</strong>而不是仅仅缓存数据，如下图所示，Web 代理服务器根据请求 URL，直接取出对应的 HTTP 响应头和响应体然后直接返回，这个响应过程简单得连 HTTP 协议都不用重新组装，甚至连 HTTP 请求头也不需要解析。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg, https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg 1.5x, https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg"
-    title="https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/rZUGlije38XvSMV.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>第三，<strong>让谁来缓存静态数据</strong>也很重要。不同语言写的 Cache 软件处理缓存数据的效率也各不相同。以 Java 为例，因为 Java 系统本身也有其弱点（比如不擅长处理大量连接请求，每个连接消耗的内存较多，Servlet 容器解析 HTTP 协议较慢），所以可以不在 Java 层做缓存，而是直接在 <strong>Web 服务器层</strong>上做，这样你就可以屏蔽 Java 语言层面的一些弱点；而相比起来，Web 服务器（如 Nginx、Apache、Varnish)也更擅长处理大并发的静态文件请求。</p>
 <h3 id="如何做动静分离的改造">如何做动静分离的改造</h3>
 <p>如何把动态页面改造成适合缓存的静态页面呢？其实也很简单，就是去除前面所说的那几个影响因素，把它们单独分离出来，做动静分离。</p>
 <p>下面，以典型的商品详情系统为例来详细介绍。这里，可以先打开京东或者淘宝的商品详情页，看看这个页面里都有哪些动静数据。从以下 5 个方面来分离出动态内容。</p>
 <ol>
-<li><strong>URL 唯一化</strong>。商品详情系统天然地就可以做到 URL 唯一化，比如每个商品都由 ID 来标识，那么 <a
-  href="http://item.xxx.com/item.htm?id=xxxx"
-  
-  
-    
-    
-    target="_blank"
-  
-  
-    rel="external nofollow noopener noreffer"
-  
-  
-  
->http://item.xxx.com/item.htm?id=xxxx</a> 就可以作为唯一的 URL 标识。为啥要 URL 唯一呢？前面说了我们是<strong>要缓存整个 HTTP 连接</strong>，那么以什么作为 Key 呢？就<strong>以 URL 作为缓存的 Key</strong>，例如以 id=xxx 这个格式进行区分。</li>
+<li><strong>URL 唯一化</strong>。商品详情系统天然地就可以做到 URL 唯一化，比如每个商品都由 ID 来标识，那么 <a class="link" href="http://item.xxx.com/item.htm?id=xxxx"  target="_blank" rel="noopener"
+    >http://item.xxx.com/item.htm?id=xxxx</a> 就可以作为唯一的 URL 标识。为啥要 URL 唯一呢？前面说了我们是<strong>要缓存整个 HTTP 连接</strong>，那么以什么作为 Key 呢？就<strong>以 URL 作为缓存的 Key</strong>，例如以 id=xxx 这个格式进行区分。</li>
 <li><strong>分离浏览者相关的因素</strong>。浏览者相关的因素包括是否已登录，以及登录身份等，这些相关因素可以单独拆分出来，通过动态请求来获取。</li>
 <li><strong>分离时间因素</strong>。服务端输出的时间也通过动态请求获取。</li>
 <li><strong>异步化地域因素</strong>。详情页面上与地域相关的因素做成异步方式获取，当然也可以通过动态请求方式获取，只是这里通过异步获取更合适。</li>
@@ -470,14 +423,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <h4 id="方案-1实体机单机部署">方案 1：实体机单机部署</h4>
 <p>这种方案是<strong>将虚拟机改为实体机</strong>，以增大 Cache 的容量，并且采用了<strong>一致性 Hash 分组</strong>的方式来提升命中率。这里将 Cache 分成若干组，是希望能达到命中率和访问热点的平衡。Hash 分组越少，缓存的命中率肯定就会越高，但短板是也会使单个商品集中在一个分组中，容易导致 Cache 被击穿，所以我们应该适当增加多个相同的分组，来<strong>平衡访问热点和命中率</strong>的问题。</p>
 <p>实体机单机部署方案的结构图如下：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg, https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg 1.5x, https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg"
-    title="https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/KHhAgkmZQiFcTUt.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p><strong>注</strong>：LVS（Linux Virtual Server），Linux 虚拟服务器。在Linux内核中实现了基于 IP 的数据请求<strong>负载均衡</strong>调度方案。</p>
 <p>实体机单机部署有以下几个优点：</p>
 <ol>
@@ -489,14 +442,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>另外就是，一个实体机上部署了 Java 应用又作为 Cache 来使用，这造成了运维上的高复杂度，所以这是一个折中的方案。如果没有更多的系统有类似需求，那么这样做也比较合适，如果有多个业务系统都有静态化改造的需求，那还是建议把 Cache 层单独抽出来公用比较合理，如下面的方案 2 。</p>
 <h4 id="方案-2统一-cache-层">方案 2：统一 Cache 层</h4>
 <p>所谓统一 Cache 层，就是将单机的 Cache 统一分离出来，形成一个单独的 Cache 集群。统一 Cache 层是个更理想的可推广方案，该方案的结构图如下：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg, https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg 1.5x, https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg"
-    title="https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/jXUiGbA538CDrlu.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>将 Cache 层单独拿出来统一管理可以<strong>减少运维成本</strong>，同时也<strong>方便接入其他静态化系统</strong>。此外，它还有一些优点。</p>
 <ol>
 <li>单独一个 Cache 层，可以减少多个应用接入时使用 Cache 的成本。这样接入的应用只要维护自己的 Java 系统就好，不需要单独维护 Cache，而只关心如何使用即可。</li>
@@ -527,14 +480,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 </ol>
 <p>最后，还有一点也很重要，那就是：节点不要太多。</p>
 <p>基于上面几个因素，选择 <strong>CDN 的二级 Cache</strong> 比较合适，因为二级 Cache 数量偏少，容量也更大，让用户的请求先<strong>回源</strong>的 CDN 的二级 Cache 中，如果没命中再回源站获取数据，部署方式如下图所示：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg, https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg 1.5x, https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg"
-    title="https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/qdC5rTNyPnYHw8I.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>使用 CDN 的二级 Cache 作为缓存，可以达到和当前服务端静态化 Cache 类似的命中率，因为节点数不多，Cache 不是很分散，访问量也比较集中，这样也就解决了命中率问题，同时能够给用户最好的访问体验，是当前比较理想的一种 CDN 化方案。</p>
 <p>除此之外，CDN 化部署方案还有以下几个特点：</p>
 <ol>
@@ -580,14 +533,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <li>将上游系统收集的热点数据发送到热点服务台，然后下游系统（如交易系统）就会知道哪些商品会被频繁调用，然后做热点保护。</li>
 </ol>
 <p>这里给出了一个图，其中用户访问商品时经过的路径有很多，主要是依赖前面的导购页面（包括首页、搜索页面、商品详情、购物车等）提前识别哪些商品的访问量高，通过这些系统中的中间件来收集热点数据，并记录到日志中。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg, https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg 1.5x, https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg"
-    title="https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/SvY7UzjJwq1ycE6.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>通过部署在每台机器上的 Agent 把日志汇总到聚合和分析集群中，然后把符合一定规则的热点数据，通过订阅分发系统再推送到相应的系统中。可以把热点数据填充到 Cache 中，或者直接推送到应用服务器的内存中，还可以对这些数据进行拦截，总之下游系统可以订阅这些数据，然后根据自己的需求决定如何处理这些数据。</p>
 <p>打造热点发现系统时，注意以下几点：</p>
 <ol>
@@ -619,14 +572,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <h3 id="排队">排队</h3>
 <p>要对流量进行削峰，最容易想到的解决方案就是用<strong>消息队列</strong>来缓冲瞬时流量，把同步的直接调用转换成<strong>异步</strong>的间接推送，中间通过一个队列在一端承接瞬时的流量洪峰，在另一端平滑地将消息推送出去。在这里，消息队列就像“水库”一样， 拦蓄上游的洪水，削减进入下游河道的洪峰流量，从而达到减免洪水灾害的目的。</p>
 <p>用消息队列来缓冲瞬时流量的方案，如下图所示：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg, https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg 1.5x, https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg"
-    title="https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/8MshEuyCFjSUq3g.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>但是，如果流量峰值持续一段时间达到了消息队列的处理上限，例如本机的消息积压达到了存储空间的上限，消息队列同样也会被压垮，这样虽然保护了下游的系统，但是和直接把请求丢弃也没多大的区别。就像遇到洪水爆发时，即使是有水库恐怕也无济于事。</p>
 <p>除了消息队列，类似的<strong>排队方式</strong>还有很多，例如：</p>
 <ol>
@@ -640,14 +593,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>第一个目的是<strong>防止</strong>部分买家使用秒杀器在参加秒杀时<strong>作弊</strong>。2011 年秒杀非常火的时候，秒杀器也比较猖獗，因而没有达到全民参与和营销的目的，所以系统增加了答题来限制秒杀器。增加答题后，下单的时间基本控制在 2s 后，秒杀器的下单比例也大大下降。</p>
 <p>第二个目的其实就是<strong>延缓请求</strong>，起到对请求流量进行削峰的作用，从而让系统能够更好地支持瞬时的流量高峰。这个重要的功能就是把峰值的下单请求拉长，从以前的 1s 之内延长到 2s ~ 10s。这样一来，<strong>请求峰值基于时间分片了</strong>。这个时间的分片对服务端处理并发非常重要，会大大减轻压力。而且，由于请求具有先后顺序，靠后的请求到来时自然也就没有库存了，因此根本到不了最后的下单步骤，所以真正的并发写就非常有限了。这种设计思路目前用得非常普遍，如当年支付宝的“咻一咻”、微信的“摇一摇”都是类似的方式。</p>
 <p>这里说一下秒杀答题的设计思路。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg, https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg 1.5x, https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg"
-    title="https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/i1IdEKObBXea6YZ.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>如上图所示，整个秒杀答题的逻辑主要分为 3 部分。</p>
 <ol>
 <li><strong>题库生成模块</strong>，这个部分主要就是生成一个个问题和答案，其实题目和答案本身并不需要很复杂，重要的是能够防止由机器来算出结果，即防止秒杀器来答题。</li>
@@ -660,26 +613,26 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <li>答案 key：userId + itemId + answer + PK</li>
 </ul>
 <p>验证的逻辑如下图所示：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg, https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg 1.5x, https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg"
-    title="https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/5gX9NwfcPqKWOao.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>注意，这里面的验证逻辑，除了验证问题的答案以外，还包括用户本身身份的验证，例如是否已经登录、用户的 Cookie 是否完整、用户是否重复频繁提交等。</p>
 <p>除了做正确性验证，还可以对提交答案的时间做些限制，例如从开始答题到接受答案要超过 1s，因为小于 1s 是人为操作的可能性很小，这样也能防止机器答题的情况。</p>
 <h3 id="分层过滤">分层过滤</h3>
 <p>前面介绍的排队和答题要么是少发请求，要么对发出来的请求进行缓冲，而针对秒杀场景还有一种方法，就是对请求进行分层过滤，从而过滤掉一些无效的请求。分层过滤其实就是采用“漏斗”式设计来处理请求的，如下图所示。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg, https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg 1.5x, https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg"
-    title="https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/r1nGDtkuNxH9KMZ.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>假如请求分别经过 CDN、前台读系统（如商品详情系统）、后台系统（如交易系统）和数据库这几层，那么：</p>
 <ul>
 <li>大部分数据和流量在用户浏览器或者 CDN 上获取，这一层可以拦截大部分数据的读取；</li>
@@ -820,14 +773,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>为了保证系统的<strong>高可用</strong>，必须设计一个 Plan B 方案来兜底，这样在最坏情况发生时仍然能够从容应对。</p>
 <h3 id="高可用建设应该从哪里着手">高可用建设应该从哪里着手</h3>
 <p>说到系统的高可用建设，它其实是一个系统工程，需要考虑到系统建设的各个阶段，也就是说它其实贯穿了系统建设的整个生命周期，如下图所示：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg, https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg 1.5x, https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg"
-    title="https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/UkoHtAJ7ewsx6jK.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>具体来说，系统的高可用建设涉及架构阶段、编码阶段、测试阶段、发布阶段、运行阶段，以及故障发生时。</p>
 <ol>
 <li><strong>架构阶段</strong>：架构阶段主要考虑系统的<strong>可扩展性</strong>和<strong>容错性</strong>，要避免系统出现<strong>单点问题</strong>。例如<strong>多机房单元化部署</strong>，即使某个城市的某个机房出现整体故障，仍然不会影响整体网站的运转。</li>
@@ -843,14 +796,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>所谓“降级”，就是当系统的容量达到一定程度时，<strong>限制或者关闭系统的某些非核心功能</strong>，从而把有限的资源保留给更核心的业务。它是一个有目的、有计划的执行过程，所以对降级一般需要有一套预案来配合执行。如果把它系统化，就可以通过预案系统和开关系统来实现降级。</p>
 <p>降级方案可以这样设计：当秒杀流量达到 5w/s 时，把成交记录的获取从展示 20 条降级到只展示 5 条。“从 20 改到 5”这个操作由一个开关来实现，也就是设置一个能够从<strong>开关系统</strong>动态获取的系统参数。</p>
 <p>下图是开关系统的示意图。它分为两部分，一部分是开关控制台，它保存了开关的具体配置信息，以及具体执行开关所对应的机器列表；另一部分是执行下发开关数据的 Agent，主要任务就是保证开关被正确执行，即使系统重启后也会生效。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg, https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg 1.5x, https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg"
-    title="https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/RBJnOL1XjClYgNu.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>执行降级无疑是在系统性能和用户体验之间选择了前者，降级后肯定会影响一部分用户的体验，例如在双 11 零点时，如果优惠券系统扛不住，可能会临时降级商品详情的优惠信息展示，把有限的系统资源用在保障交易系统正确展示优惠信息上，即保障用户真正下单时的价格是正确的。所以降级的核心目标是牺牲次要的功能和用户体验来保证核心业务流程的稳定，是一个不得已而为之的举措。</p>
 <h3 id="限流">限流</h3>
 <p>如果说降级是牺牲了一部分次要的功能和用户的体验效果，那么限流就是更极端的一种保护措施了。限流就是当系统容量达到瓶颈时，需要通过限制一部分流量来保护系统，并做到既可以人工执行开关，也支持自动化保护的措施。</p>
@@ -864,14 +817,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <li><strong>客户端限流</strong>，好处可以限制请求的发出，通过减少发出无用请求从而减少对系统的消耗。缺点就是当客户端比较分散时，没法设置合理的限流阈值：如果阈值设的太小，会导致服务端没有达到瓶颈时客户端已经被限制；而如果设的太大，则起不到限制的作用。</li>
 <li><strong>服务端限流</strong>，好处是可以根据服务端的性能设置合理的阈值，而缺点就是被限制的请求都是无效的请求，处理这些无效的请求本身也会消耗服务器资源。</li>
 </ul>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg, https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg 1.5x, https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg"
-    title="https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/Yo38vDIal5XfRui.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>在限流的实现手段上来讲，<strong>基于 QPS 和线程数的限流应用最多</strong>，最大 QPS 很容易通过压测提前获取，例如我们的系统最高支持 1w QPS 时，可以设置 8000 来进行限流保护。线程数限流在客户端比较有效，例如在远程调用时设置连接池的线程数，超出这个并发线程请求，就将线程进行<strong>排队</strong>或者<strong>直接超时丢弃</strong>。</p>
 <p>限流无疑会影响用户的正常请求，所以<strong>必然会导致一部分用户请求失败</strong>，因此在系统处理这种异常时一定要设置<strong>超时时间</strong>，防止因被限流的请求不能 **fast fail（快速失败）**而拖垮系统。</p>
 <h3 id="拒绝服务">拒绝服务</h3>
@@ -909,14 +862,14 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <p>大家可能通常理解 Hash 分组，像 Cache 这种可能一个 key 对应的数据只存在于一个实例中，这样做其实是为了保证缓存命中率，因为所有请求都被路由到一个缓存实例中，除了第一次没有命中外，后面的都会命中。</p>
 <p>但是这样也存在一个问题，就是如果热点商品过于集中，Cache 就会成为瓶颈，这时单个实例也支撑不了。像秒杀这个场景中，单个商品对 Cache 的访问会超过 20w 次，一般单 Cache 实例都扛不住这么大的请求量。所以需要采用一个分组中有多个实例缓存相同的数据（冗余）的办法来支撑更大的访问量。</p>
 <p>你可能会问：一个商品数据存储在多个 Cache 实例中，如何保证数据一致性呢？（关于失效问题大家问得也比较多，后面再回答。）这个专栏中提的 Hash 分组都是基于 Nginx+Varnish 实现的，Nginx 把请求的 URL 中的商品 ID 进行 Hash 并路由到一个 upstream 中，这个 upstream 挂载一个 Varnish 分组（如下图所示）。这样，一个相同的商品就可以随机访问一个分组的任意一台 Varnish 机器了。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg, https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg 1.5x, https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg"
-    title="https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/iwzv1lULr6pQjEa.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>另外一个问题，关于 Hash 分组大家关注比较多的是命中率的问题，就是 Cache 机器越多命中率会越低。</p>
 <p>这个其实很好理解，Cache 实例越多，那么这些 Cache 缓存数据需要访问的次数也就越多。例如我有 3 个 Redis 实例，需要 3 个 Redis 实例都缓存商品 A，那么至少需要访问 3 次才行，而且是这 3 次访问刚好落到不同的 Redis 实例中。那么从第 4 次访问开始才会被命中，如果仅仅是一个 Redis 实例，那么第二次访问时其实就能命中了。所以理论上 Cache 实例多会影响命中率。</p>
 <p>你可能还会问，如果访问量足够大，那么只是影响前几次命中率而已，是的，如果 Cache 一直不失效的话是这样的，但是在实际的生产环境中 Cache 失效是很频繁发生的事情。很多情况下，还没等到所有 Cache 实例填满，该商品就已经失效了。所以，我们要根据商品的重复访问量来合理地设置 Cache 分组。</p>
@@ -927,59 +880,186 @@ https://g.xxx.com/tm/xx-b/4.0.94/mods/??module-preview/index.xtpl.js,module-jhs/
 <li><strong>被动失效</strong>，主要处理如模板变更和一些对时效性不太敏感数据的失效，采用<strong>设置一定时间长度</strong>（如只缓存 3 秒钟）这种<strong>自动失效</strong>的方式。当然，你也要开发一个后台管理界面，以便能够在紧急情况下手工失效某些 Cache。</li>
 <li><strong>主动失效</strong>，一般有 Cache 失效中心监控数据库表变化发送失效请求、系统发布也需要清空 Cache 数据等几种场景。其中失效中心承担了主要的失效功能，这个失效中心的逻辑图如下：</li>
 </ul>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg, https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg 1.5x, https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg"
-    title="https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/nt8DjHQf5OJ9oze.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>失效中心会监控关键数据表的变更（有个中间件来解析 MySQL 的 binglog，然后发现有 Insert、Update、Delete 等操作时，会把变更前的数据以及要变更的数据转成一个消息发送给订阅方），通过这种方式来发送失效请求给 Cache，从而清除 Cache 数据。如果 Cache 数据放在 CDN 上，那么也可以采用类似的方式来设计级联的失效结构，采用主动发请求给 Cache 软件失效的方式，如下图所示：</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg"
-    data-srcset="https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg, https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg 1.5x, https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg"
-    title="https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg" /></p>
+<p><img src="https://s2.loli.net/2022/07/03/XPkevyN8zx2qrS7.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>这种失效由失效中心将失效请求发送给每个 CDN 节点上的 Console 机，然后 Console 机来发送失效请求给每台 Cache 机器。</p>
-</div><div class="post-footer" id="post-footer">
-  <div class="post-info">
-    <div class="post-info-line">
-      <div class="post-info-mod">
-        <span title=2020-11-21&#32;22:26:24>Updated on 2020-11-21</span>
-      </div>
-      <div class="post-info-license "></div>
-    </div>
-    <div class="post-info-line">
-      <div class="post-info-md"></div>
-      <div class="post-info-share">
-        <span></span>
-      </div>
-    </div>
-  </div>
 
-  <div class="post-info-more">
-    <section class="post-tags"><i class="fa-solid fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E7%A7%92%E6%9D%80/">秒杀</a></section>
-    <section>
-      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%A7%92%E6%9D%80/">秒杀</a>
+        
     </section>
-  </div>
 
-  <div class="post-nav"><a href="/posts/%E8%B5%9B%E9%A9%AC%E9%97%AE%E9%A2%98/" class="prev" rel="prev" title="赛马问题"><i class="fa-solid fa-angle-left fa-fw"></i>赛马问题</a>
-      <a href="/posts/%E6%B5%8B%E8%AF%95/" class="next" rel="next" title="测试文档">测试文档<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.115.4">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
-        </div></div>
-  </footer></div><div class="widgets">
-  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-      <i class="fa-solid fa-arrow-up fa-fw"></i>
-    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-      <i class="fa-solid fa-comment fa-fw"></i>
-    </a>
-  </div><div id="mask"></div>
-</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Ther 的博客
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>

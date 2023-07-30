@@ -1,47 +1,31 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-    <meta name="robots" content="noodp" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <title>Go in action-笔记 - Ther 的博客</title><meta name="author" content="">
-<meta name="author-link" content="">
-<meta name="description" content="一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
 因为没有从编译代码到执行代码的中间过程，用动态语言编写应用程序可以快速看到输出。代价是，动态语言不提供静态语言提供的类型安全特性，不得不经常用大量的测试套件来避免在运行的时候出现类型错误这类 bug。
 并发 现代计算机都拥有多个核，但是大部分编程语言都没有有效的工具让程序可以轻易利用这些资源。这些语言需要 写大量的线程同步代码来利用多个核，很容易导致错误。
 Go 语言对并发的支持是这门语言最重要的特性之一。goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
 goroutine goroutine 是可以与其他 goroutine 并行执行的函数，同时也会与主程序（程序的入口）并行执行。在其他编程语言中，需要用线程来完成同样的事情，而在 Go 语言中会使用同一个线程来执行多个 goroutine。
 例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组逻辑处理器上调度执行 goroutine。每个逻辑处理器绑定到一个操作系统线程上（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。
 如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：
-func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&#34;发生了可怕的事情&#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。" />
-<meta name="keywords" content="" /><meta itemprop="name" content="Go in action-笔记">
-<meta itemprop="description" content="一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
+func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&amp;#34;发生了可怕的事情&amp;#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。'>
+<title>Go in action-笔记</title>
+
+<link rel='canonical' href='https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='Go in action-笔记'>
+<meta property='og:description' content='一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
 因为没有从编译代码到执行代码的中间过程，用动态语言编写应用程序可以快速看到输出。代价是，动态语言不提供静态语言提供的类型安全特性，不得不经常用大量的测试套件来避免在运行的时候出现类型错误这类 bug。
 并发 现代计算机都拥有多个核，但是大部分编程语言都没有有效的工具让程序可以轻易利用这些资源。这些语言需要 写大量的线程同步代码来利用多个核，很容易导致错误。
 Go 语言对并发的支持是这门语言最重要的特性之一。goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
 goroutine goroutine 是可以与其他 goroutine 并行执行的函数，同时也会与主程序（程序的入口）并行执行。在其他编程语言中，需要用线程来完成同样的事情，而在 Go 语言中会使用同一个线程来执行多个 goroutine。
 例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组逻辑处理器上调度执行 goroutine。每个逻辑处理器绑定到一个操作系统线程上（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。
 如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：
-func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&#34;发生了可怕的事情&#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。"><meta itemprop="datePublished" content="2023-03-19T20:04:52+08:00" />
-<meta itemprop="dateModified" content="2023-03-19T20:04:52+08:00" />
-<meta itemprop="wordCount" content="2697">
-<meta itemprop="keywords" content="" /><meta property="og:title" content="Go in action-笔记" />
-<meta property="og:description" content="一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
-因为没有从编译代码到执行代码的中间过程，用动态语言编写应用程序可以快速看到输出。代价是，动态语言不提供静态语言提供的类型安全特性，不得不经常用大量的测试套件来避免在运行的时候出现类型错误这类 bug。
-并发 现代计算机都拥有多个核，但是大部分编程语言都没有有效的工具让程序可以轻易利用这些资源。这些语言需要 写大量的线程同步代码来利用多个核，很容易导致错误。
-Go 语言对并发的支持是这门语言最重要的特性之一。goroutine 很像线程，但是它占用的内存远少于线程，使用它需要的代码更少。通道（channel）是一种内置的数据结构，可以让用户在不同的 goroutine 之间同步发送具有类型的消息。这让编程模型更倾向于在 goroutine之间发送消息，而不是让多个 goroutine 争夺同一个数据的使用权。
-goroutine goroutine 是可以与其他 goroutine 并行执行的函数，同时也会与主程序（程序的入口）并行执行。在其他编程语言中，需要用线程来完成同样的事情，而在 Go 语言中会使用同一个线程来执行多个 goroutine。
-例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组逻辑处理器上调度执行 goroutine。每个逻辑处理器绑定到一个操作系统线程上（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。
-如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：
-func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&#34;发生了可怕的事情&#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-03-19T20:04:52+08:00" />
-<meta property="article:modified_time" content="2023-03-19T20:04:52+08:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Go in action-笔记"/>
+func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&amp;#34;发生了可怕的事情&amp;#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。'>
+<meta property='og:url' content='https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='Ther 的博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2023-03-19T20:04:52&#43;08:00'/><meta property='article:modified_time' content='2023-03-19T20:04:52&#43;08:00'/>
+<meta name="twitter:title" content="Go in action-笔记">
 <meta name="twitter:description" content="一、介绍 Go 语言是现代的、快速的，带有一个强大的标准库。 Go 语言内置对并发的支持。 Go 语言使用接口作为代码复用的基础模块。 开发速度 编译 Go 程序时，编译器只会关注那些直接被引用的库，而不是像 Java、C 和 C&#43;&#43; 那样，要遍历依赖链中所有依赖的库。
 因为没有从编译代码到执行代码的中间过程，用动态语言编写应用程序可以快速看到输出。代价是，动态语言不提供静态语言提供的类型安全特性，不得不经常用大量的测试套件来避免在运行的时候出现类型错误这类 bug。
 并发 现代计算机都拥有多个核，但是大部分编程语言都没有有效的工具让程序可以轻易利用这些资源。这些语言需要 写大量的线程同步代码来利用多个核，很容易导致错误。
@@ -49,216 +33,207 @@ Go 语言对并发的支持是这门语言最重要的特性之一。goroutine �
 goroutine goroutine 是可以与其他 goroutine 并行执行的函数，同时也会与主程序（程序的入口）并行执行。在其他编程语言中，需要用线程来完成同样的事情，而在 Go 语言中会使用同一个线程来执行多个 goroutine。
 例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组逻辑处理器上调度执行 goroutine。每个逻辑处理器绑定到一个操作系统线程上（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。
 如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：
-func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&#34;发生了可怕的事情&#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。"/>
-<meta name="application-name" content="Ther 的博客">
-<meta name="apple-mobile-web-app-title" content="Ther 的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="canonical" href="https://blog.ther.cool/posts/go-in-action-%E7%AC%94%E8%AE%B0/" /><link rel="prev" href="https://blog.ther.cool/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" /><link rel="next" href="https://blog.ther.cool/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Go in action-笔记",
-    "inLanguage": "en-us",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.ther.cool\/posts\/go-in-action-%E7%AC%94%E8%AE%B0\/"
-    },"genre": "posts","wordcount":  2697 ,
-    "url": "https:\/\/blog.ther.cool\/posts\/go-in-action-%E7%AC%94%E8%AE%B0\/","datePublished": "2023-03-19T20:04:52+08:00","dateModified": "2023-03-19T20:04:52+08:00","publisher": {
-      "@type": "Organization",
-      "name": "Author"},"author": {
-        "@type": "Person",
-        "name": "Author"
-      },"description": ""
-  }
-  </script></head>
-  <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script><div class="wrapper"><header class="desktop" id="header-desktop">
-  <div class="header-wrapper">
-    <div class="header-title">
-      <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-    <nav>
-      <ul class="menu"><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-              
-            >
-              <a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item delimiter"></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header><header class="mobile" id="header-mobile">
-  <div class="header-container">
-    <div class="header-wrapper">
-      <div class="header-title">
-        <a href="/" title="Ther 的博客"><span class="header-title-text">Ther 的博客</span></a></div>
-      <div class="menu-toggle" id="menu-toggle-mobile">
-        <span></span><span></span><span></span>
-      </div>
-    </div>
-    <nav>
-      <ul class="menu" id="menu-mobile"><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/posts/"
-                
-                
-              >文章</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/categories/"
-                
-                
-              >分类</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/tags/"
-                
-                
-              >标签</a></li><li
-              class="menu-item"
-            ><a
-                class="menu-link"
-                href="/about/"
-                
-                
-              >关于</a></li><li class="menu-item theme-switch" title="Switch Theme">
-          <i class="fa-solid fa-adjust fa-fw"></i>
-        </li></ul>
-    </nav>
-  </div>
-</header>
-<div class="search-dropdown desktop">
-  <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-  <div id="search-dropdown-mobile"></div>
-</div>
-<main class="container" page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">Contents <i class="toc-icon fa-solid fa-angle-down fa-fw"></i></h2>
-      <div class="toc-content" id="toc-content-auto"></div></aside>
+func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里有些地方检测到了错误 go log(&amp;#34;发生了可怕的事情&amp;#34;) 关键字 go 是唯一需要去编写的代码，调度 log 函数作为独立的 goroutine 去运行，以便与其他 goroutine 并行执行。这意味着应用程序的其余部分会与记录日志并行执行，通常这种并行能让最终用户觉得性能更好。goroutine 占用的资源更少，所以常常能启动成千上万个 goroutine。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
 
-  <aside class="aside-custom">
-    
-  </aside>
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
 
-  <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX">Go in action-笔记</h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle"></i>
-      </span></span>
-          <span class="post-category">included in <a href="/categories/go/"><i class="fa-regular fa-folder fa-fw"></i>&nbsp;go</a></span></div>
-      <div class="post-meta-line"><span title=2023-03-19&#32;20:04:52>
-            <i class="fa-regular fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-03-19" >2023-03-19</time>
-          </span>&nbsp;<i class="fa-solid fa-pencil-alt fa-fw"></i>&nbsp;2697 words&nbsp;
-        <i class="fa-regular fa-clock fa-fw"></i>&nbsp;13 minutes&nbsp;</div>
-    </div><div class="details toc" id="toc-static" kept="false">
-        <div class="details-summary toc-title">
-          <span>Contents</span>
-          <span><i class="details-icon fa-solid fa-angle-right"></i></span>
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huba86cf191a79332d5cad488007211472_22918_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ther 的博客</a></h1>
+            <h2 class="site-description"></h2>
         </div>
-        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#开发速度">开发速度</a></li>
-        <li><a href="#并发">并发</a></li>
-        <li><a href="#goroutine">goroutine</a></li>
-        <li><a href="#通道">通道</a></li>
-        <li><a href="#类型系统">类型系统</a></li>
-        <li><a href="#内存管理">内存管理</a></li>
-      </ul>
-    </li>
-  </ul>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/posts/' >
+                
+                
+                
+                <span>文章</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/categories/' >
+                
+                
+                
+                <span>分类</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
 
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#21-main-包">2.1 main 包</a></li>
-        <li><a href="#22-search-包">2.2 search 包</a></li>
-      </ul>
-    </li>
-  </ul>
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
 
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#31-包">3.1 包</a></li>
-        <li><a href="#32-导入">3.2 导入</a></li>
-        <li><a href="#33-init-函数">3.3 init 函数</a></li>
-        <li><a href="#34-go-的工具">3.4 Go 的工具</a></li>
-      </ul>
-    </li>
-  </ul>
 
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#41-数组">4.1 数组</a></li>
-        <li><a href="#42-切片">4.2 切片</a></li>
-        <li><a href="#43-映射">4.3 映射</a></li>
-      </ul>
-    </li>
-  </ul>
 
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#51-用户定义的类型">5.1 用户定义的类型</a></li>
-        <li><a href="#52-方法">5.2 方法</a></li>
-        <li><a href="#53-类型的本质">5.3 类型的本质</a></li>
-        <li><a href="#54-接口">5.4 接口</a></li>
-      </ul>
-    </li>
-  </ul>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
 
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#61-并发与并行">6.1 并发与并行</a></li>
-        <li><a href="#62-goroutine">6.2 goroutine</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav></div>
-      </div><div
-      class="content"
-      id="content"
-      
-      
-    ><h1 id="一介绍">一、介绍</h1>
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/go/" >
+                go
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/go-in-action-%E7%AC%94%E8%AE%B0/">Go in action-笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 19, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    13 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="一介绍">一、介绍</h1>
 <ul>
 <li>Go 语言是现代的、快速的，带有一个强大的<strong>标准库</strong>。</li>
 <li>Go 语言内置对<strong>并发</strong>的支持。</li>
@@ -274,14 +249,16 @@ func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里
 <h3 id="goroutine">goroutine</h3>
 <p>goroutine 是可以与其他 goroutine 并行执行的<strong>函数</strong>，同时也会<strong>与主程序（程序的入口）并行执行</strong>。在其他编程语言中，需要用<strong>线程</strong>来完成同样的事情，而在 Go 语言中会使用<strong>同一个线程</strong>来执行<strong>多个 goroutine</strong>。</p>
 <p>例如，用户在写一个 Web 服务器，希望同时处理不同的 Web 请求，如果使用 C 或者 Java，不得不写大量的额外代码来使用线程。在 Go 语言中，net/http 库直接使用了内置的 goroutine。每个接收到的请求都自动在其自己的 goroutine 里处理。goroutine 使用的内存比线程更少，Go 语言运行时会自动在配置的一组<strong>逻辑处理器</strong>上调度执行 goroutine。<strong>每个逻辑处理器绑定到一个操作系统线程上</strong>（下图）。这让用户的应用程序执行效率更高，而开发工作量显著减少。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png"
-    data-srcset="https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png, https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png 1.5x, https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png"
-    title="image-20200611094338474" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/GFsrxnJjk4BC1TD.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20200611094338474"
+	
+	
+></p>
 <p>如果想在执行一段代码的同时，并行去做另外一些事情，goroutine 是很好的选择。下面是一个简单的例子：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">log</span><span class="p">(</span><span class="nx">msg</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">	<span class="c1">// ...这里是一些记录日志的代码
@@ -404,20 +381,8 @@ func log(msg string) { // ...这里是一些记录日志的代码 } // 代码里
 <p>Go 文档里经常使用命令（command）这个词来指代可执行程序，如命令行应用程序。这会让新手在阅读文档时产生困惑。记住，在 Go 语言里，命令是指任何可执行程序。作为对比，包更常用来指语义上可导入的功能单元。</p>
 </blockquote>
 <p><strong>获取包的文档</strong></p>
-<p>例如：可以访问 <a
-  href="http://golang.org/pkg/fmt/"
-  
-  
-    
-    
-    target="_blank"
-  
-  
-    rel="external nofollow noopener noreffer"
-  
-  
-  
->http://golang.org/pkg/fmt/</a> 或者在终端输入 <code>go doc fmt</code> 来了解更多关于 fmt 包的细节。</p>
+<p>例如：可以访问 <a class="link" href="http://golang.org/pkg/fmt/"  target="_blank" rel="noopener"
+    >http://golang.org/pkg/fmt/</a> 或者在终端输入 <code>go doc fmt</code> 来了解更多关于 fmt 包的细节。</p>
 <p>执行命令 go build，会生成一个二进制文件。在 UNIX、Linux 和 Mac OS X 系统上，这个文件会命名为 hello，而在 Windows 系统上会命名为 hello.exe。</p>
 <h3 id="32-导入">3.2 导入</h3>
 <p>如果需要导入多个包，习惯上是将 import 语句包装在一个导入块。例如：</p>
@@ -634,14 +599,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 <p>切片的动态增长是通过<strong>内置函数 append</strong> 来实现的。这个函数可以快速且高效地增长切片。<strong>还可以通过对切片再次切片来缩小一个切片的大小</strong>。因为切片的底层内存也是在<strong>连续块</strong>中分配的，所以切片还能获得<strong>索引</strong>、<strong>迭代</strong>以及<strong>为垃圾回收优化</strong>的好处。</p>
 <h4 id="421-内部实现">4.2.1 内部实现</h4>
 <p>切片是一个很小的对象，对底层<strong>数组</strong>进行了抽象，并提供相关的操作方法。切片有 3 个字段，包含了 Go 语言需要操作底层数组的元数据。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg, https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg 1.5x, https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
-    title="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>这 3 个字段分别是指向底层数组的指针、切片访问的元素的个数（即长度）和切片允许增长到的元素个数（即容量）。</p>
 <h4 id="422-创建和初始化">4.2.2 创建和初始化</h4>
 <p>Go 语言中有几种方法可以创建和初始化切片。是否能提前知道切片需要的容量通常会决定要如何创建切片。</p>
@@ -655,14 +620,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 其长度为 3 个元素，容量为 5 个元素
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">slice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </span></span></code></pre></div><p>分别指定长度和容量时创建的切片，<strong>底层数组的长度是指定的<!-- raw HTML omitted -->容量<!-- raw HTML omitted --></strong>，但是初始化后并不能访问所有的数组元素。下图描述了上述代码里声明的整型切片在初始化并存入一些值后的样子。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg, https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg 1.5x, https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
-    title="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/dqlH6OpUDCcatZj.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>上述代码的切片可以访问 3 个元素，而底层数组拥有 5 个元素。剩余的 2 个元素可以在后期操作中<strong>合并</strong>到切片，可以通过切片访问这些元素。<strong>如果基于这个切片创建新的切片，新切片会和原有切片共享底层数组，也能通过后期操作来访问多余容量的元素</strong>。<strong>有疑问</strong></p>
 <p>不允许创建容量小于长度的切片。</p>
 <p>另一种常用的创建切片的方法是使用<strong>切片字面量</strong>。这种方法和创建数组类似，只是不需要指定[]运算符里的值。<strong>初始的长度和容量会基于初始化时提供的元素的个数确定</strong>。</p>
@@ -687,14 +652,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 创建 nil 整型切片
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">slice</span> <span class="p">[]</span><span class="kt">int</span>
 </span></span></code></pre></div><p>在 Go 语言里，nil 切片是很常见的创建切片的方法。nil 切片可以用于很多标准库和内置函数。在需要描述一个不存在的切片时，nil 切片会很好用。例如，函数要求返回一个切片但是发生异常的时候。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg, https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg 1.5x, https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg"
-    title="https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/uPS8yLlhWUNOsrz.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>利用初始化，通过声明一个切片可以创建一个空切片。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 使用 make 创建空的整型切片
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">slice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -719,14 +684,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 其长度为 2 个元素，容量为 4 个元素
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">newSlice</span> <span class="o">:=</span> <span class="nx">slice</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 </span></span></code></pre></div><p>执行完上面的切片动作后，我们有了两个切片，它们<strong>共享同一段底层数组</strong>，但通过不同的切片会看到底层数组的不同部分。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg, https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg 1.5x, https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg"
-    title="https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/c3yRkASKgLCE7DM.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>第一个切片 slice 能够看到底层数组全部 5 个元素的容量，不过之后的 newSlice 就看不到。对于 newSlice ，底层数组的容量只有 4 个元素。newSlice 无法访问到它所指向的底层数组的第一个元素之前的部分。所以，对 newSlice 来说，之前的那些元素就是不存在的。</p>
 <p>使用下面的公式，可以计算出任意切片的长度和容量。</p>
 <ul>
@@ -763,14 +728,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 将新元素赋值为 60
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">newSlice</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">newSlice</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
 </span></span></code></pre></div><p>append 操作完成后，两个切片和底层数组的布局如图所示。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg, https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg 1.5x, https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg"
-    title="https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/z3IQfS8BHaPig1G.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>因为 newSlice 在底层数组里还有额外的容量可用，append 操作将可用的元素合并到切片的长度，并对其进行赋值。由于和原始的 slice 共享同一个底层数组，<!-- raw HTML omitted -->slice 中索引为 3 的元素的值也被改动了<!-- raw HTML omitted -->。</p>
 <p>如果切片的底层数组没有足够的可用容量，append 函数会创建一个<strong>新的底层数组</strong>，将被引用的现有的值<strong>复制</strong>到新数组里，再追加新的值。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 创建一个整型切片
@@ -780,14 +745,14 @@ Go 语言的文档也提供了浏览器版本。有时候，通过跳转到文�
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 将新元素赋值为 50
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">newSlice</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">slice</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </span></span></code></pre></div><p>当这个 append 操作完成后，newSlice 拥有一个全新的底层数组，这个数组的容量是原来的两倍。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg, https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg 1.5x, https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg"
-    title="https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/H1PAVMxrWEFNGeZ.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p><strong>注</strong>：注意新的长度和容量并不是原来的两倍。</p>
 <p>函数 append 会智能地处理底层数组的容量增长。<strong>在切片的容量小于 1000 个元素时，总是会成倍地增加容量。一旦元素个数超过 1000，容量的增长因子会设为 1.25，也就是会每次增加 25%的容量</strong>。随着语言的演化，这种增长算法可能会有所改变。</p>
 <p><strong>3. 创建切片时的 第 3 个索引</strong></p>
@@ -817,14 +782,14 @@ Index: 1 Value: 20
 Index: 2 Value: 30
 Index: 3 Value: 40
 </code></pre><p>当迭代切片时，关键字 range 会返回两个值。第一个值是当前迭代到的索引位置，第二个值是该位置对应元素值的一份<strong>副本</strong>。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg, https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg 1.5x, https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg"
-    title="https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/5lX6upz1vgyfR8Q.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>需要强调的是，range 创建了每个元素的<strong>副本</strong>，而不是直接返回对该元素的引用。<strong>如果使用该值变量的地址作为指向每个元素的指针，就会造成错误</strong>。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// 创建一个整型切片
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 其长度和容量都是 4 个元素
@@ -875,14 +840,14 @@ Index: 3 Value: 40
 </span></span><span class="line"><span class="cl"><span class="c1">// 为第一个切片追加值为 20 的元素
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">slice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">slice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">20</span><span class="p">)</span>
 </span></span></code></pre></div><p>当上述代码操作完成后，会为新的整型切片分配新的底层数组，然后将切片复制到外层切片的索引为 0 的元素。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg, https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg 1.5x, https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg"
-    title="https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/xNGH6nAKcXhMQmy.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>即便是这么简单的多维切片，操作时也会涉及众多布局和值。看起来在函数间像这样传递数据结构也会很复杂。不过切片本身结构很简单，可以以很小的成本在函数间传递。</p>
 <h4 id="425-在函数间传递切片">4.2.5 在函数间传递切片</h4>
 <p>在函数间传递切片就是要在<strong>函数间以值的方式传递切片</strong>。由于切片的尺寸很小，在函数间复制和传递切片成本也很低。</p>
@@ -899,28 +864,28 @@ Index: 3 Value: 40
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">slice</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>在 64 位架构的机器上，一个切片需要 <strong>24 字节</strong>的内存：指针字段需要 8 字节，长度和容量字段分别需要 8 字节。由于<strong>与切片关联的数据包含在底层数组里，不属于切片本身</strong>，所以将切片复制到任意函数的时候，对底层数组大小都不会有影响。复制时只会复制切片本身，不会涉及底层数组。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg, https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg 1.5x, https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg"
-    title="https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/3q27lQdtkFB6zCc.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>在函数间传递 24 个字节的数据会非常快速、简单。这也是切片效率高的地方。不需要传递指针和处理复杂的语法，只需要复制切片，按想要的方式修改数据，然后传递回一份新的切片副本。</p>
 <h3 id="43-映射">4.3 映射</h3>
 <p>映射是一个存储键值对的无序集合。</p>
 <p>映射是一种数据结构，用于存储一系列无序的键值对。映射里基于键来存储值。映射功能强大的地方是，能够基于键快速检索数据。键就像索引一样，指向与该键关联的值。</p>
 <h4 id="431-内部实现">4.3.1 内部实现</h4>
 <p>映射是一个集合，可以使用类似处理数组和切片的方式迭代映射中的元素。但映射是<strong>无序的集合</strong>，意味着没有办法预测键值对被返回的<strong>顺序</strong>。<strong>即便使用同样的顺序保存键值对，每次迭代映射的时候顺序也可能不一样</strong>。（<strong>有疑问</strong>,<strong>事实确实如此</strong>）无序的原因是映射的实现使用了<strong>散列表</strong>。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg, https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg 1.5x, https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg"
-    title="https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/AbHx8FUh6GYaoDt.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>映射的散列表包含一组桶。在存储、删除或者查找键值对的时候，所有操作都要先选择一个桶。把操作映射时指定的键传给映射的散列函数，就能选中对应的桶。这个散列函数的目的是生成一个索引，这个索引最终将键值对分布到所有可用的桶里。</p>
 <p>随着映射存储的增加，索引分布越均匀，访问键值对的速度就越快。如果你在映射里存储了 10 000 个元素，你不希望每次查找都要访问 10 000 个键值对才能找到需要的元素，你希望查找键值对的次数越少越好。对于有 10000 个元素的映射，每次查找只需要查找 8 个键值对才是一个分布得比较好的映射。映射通过合理数量的桶来平衡键值对的分布。</p>
 <p>Go 语言的映射生成散列键的过程比图 4-25 展示的过程要稍微长一些，不过大体过程是类似的。在我们的例子里，键是字符串，代表颜色。这些字符串会转换为一个数值（散列值）。这个数值落在映射已有桶的序号范围内表示一个可以用于存储的桶的序号。之后，这个数值就被用于选择桶，用于存储或者查找指定的键值对。<strong>对 Go 语言的映射来说，生成的散列键的一部分，具体来说是低位（LOB），被用来选择桶</strong>。</p>
@@ -1107,23 +1072,23 @@ panic: runtime error: assignment to entry in nil map
 <h3 id="61-并发与并行">6.1 并发与并行</h3>
 <p>当运行一个应用程序（如一个 IDE 或者编辑器）的时候，操作系统会为这个应用程序启动一个进程（<strong>process</strong>）。可以将这个进程看作一个包含了应用程序在运行中需要用到和维护的各种资源的容器。</p>
 <p>图 6-1 展示了一个包含所有可能分配的常用资源的进程。这些资源包括但不限于内存地址空间、文件和设备的句柄以及线程。一个线程（<strong>thread</strong>）是一个执行空间，这个空间会被操作系统调度来运行函数中所写的代码。每个进程至少包含一个线程，每个进程的初始线程被称作<strong>主线程</strong>。因为执行这个线程的空间是应用程序的本身的空间，所以当主线程终止时，应用程序也会终止。操作系统将线程调度到某个处理器上运行，这个处理器<strong>并不一定是进程所在的处理器</strong>。不同操作系统使用的线程调度算法一般都不一样，但是这种不同会被操作系统屏蔽，并不会展示给程序员。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg, https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg 1.5x, https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg"
-    title="https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/PX5GcYTqnmHRCaD.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>操作系统会在物理处理器上调度线程来运行，而 Go 语言的运行时会在逻辑处理器上调度 goroutine 来运行。每个逻辑处理器都分别绑定到单个操作系统线程。在 1.5 版本上，Go语言的运行时默认会为每个可用的物理处理器分配一个逻辑处理器。在 1.5 版本之前的版本中，默认给整个应用程序只分配一个逻辑处理器。这些逻辑处理器会用于执行所有被创建 goroutine。即便只有一个逻辑处理器，Go也可以以神奇的效率和性能，并发调度无数个goroutine。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg, https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg 1.5x, https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg"
-    title="https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/dM1vkPXbjYrcmLl.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>在图 6-2 中，可以看到操作系统线程、逻辑处理器和本地运行队列之间的关系。如果创建一
 个 goroutine 并准备运行，这个 goroutine 就会被放到调度器的全局运行队列中。之后，调度器就将这些队列中的 goroutine 分配给一个逻辑处理器，并放到这个逻辑处理器对应的本地运行队列中。本地运行队列中的 goroutine 会一直等待直到自己被分配的逻辑处理器执行。</p>
 <p>有时，正在运行的 goroutine 需要执行一个阻塞的系统调用，如打开一个文件。当这类调用
@@ -1131,14 +1096,14 @@ panic: runtime error: assignment to entry in nil map
 <p>如果一个 goroutine 需要做一个网络 I/O 调用，流程上会有些不一样。在这种情况下，goroutine会和逻辑处理器分离，并移到集成了网络轮询器的运行时。一旦该轮询器指示某个网络读或者写操作已经就绪，对应的 goroutine 就会重新分配到逻辑处理器上来完成操作。调度器对可以创建的逻辑处理器的数量没有限制，但语言运行时默认限制每个程序最多创建 10 000 个线程。这个限制值可以通过调用 runtime/debug 包的 SetMaxThreads 方法来更改。如果程序试图使用更多的线程，就会崩溃。</p>
 <p>并发（<strong>concurrency</strong>）不是并行（<strong>parallelism</strong>）。并行是让不同的代码片段同时在不同的物理处理器上执行。并行的关键是同时<strong>做</strong>很多事情，而并发是指同时<strong>管理</strong>很多事情，这些事情可能只做了一半就被暂停去做别的事情了。在很多情况下，并发的效果比并行好，因为操作系统和硬件的总资源一般很少，但能支持系统同时做很多事情。这种“使用较少的资源做更多的事情”的哲学，也是指导 Go 语言设计的哲学。</p>
 <p>如果希望让 goroutine 并行，必须使用多于一个逻辑处理器。当有多个逻辑处理器时，调度器会将 goroutine 平等分配到每个逻辑处理器上。这会让 goroutine 在不同的线程上运行。不过要想真的实现并行的效果，用户需要让自己的程序运行在有多个物理处理器的机器上。否则，哪怕 Go 语言运行时使用多个线程，goroutine 依然会在同一个物理处理器上并发运行，达不到并行的效果。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg, https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg 1.5x, https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg"
-    title="https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/RgK7ybIaiBvYnm1.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>图 6-3 展示了在一个逻辑处理器上并发运行 goroutine 和在两个逻辑处理器上并行运行两个并
 发的 goroutine 之间的区别。调度器包含一些聪明的算法，这些算法会随着 Go 语言的发布被更新和改进，所以不推荐盲目修改语言运行时对逻辑处理器的默认设置。如果真的认为修改逻辑处理器的数量可以改进性能，也可以对语言运行时的参数进行细微调整。后面会介绍如何做这种修改。</p>
 <h3 id="62-goroutine">6.2 goroutine</h3>
@@ -1148,14 +1113,14 @@ panic: runtime error: assignment to entry in nil map
 <p>关键字 defer 会修改函数调用时机，在正在执行的函数返回时才真正调用 defer 声明的函数。</p>
 <p>基于调度器的内部算法，一个正运行的 goroutine 在工作结束前，可以被停止并重新调度。
 调度器这样做的目的是防止某个 goroutine 长时间占用逻辑处理器。当 goroutine 占用时间过长时，调度器会停止当前正运行的 goroutine，并给其他可运行的 goroutine 运行的机会。</p>
-<p><img
-    class="lazyload"
-    src="/svg/loading.min.svg"
-    data-src="https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg"
-    data-srcset="https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg, https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg 1.5x, https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg 2x"
-    data-sizes="auto"
-    alt="https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg"
-    title="https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg" /></p>
+<p><img src="https://s2.loli.net/2023/03/19/3M1JicrDoQ4yRhE.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
 <p>图 6-4 从逻辑处理器的角度展示了这一场景。在第 1 步，调度器开始运行 goroutine A，而 goroutine B 在运行队列里等待调度。之后，在第 2 步，调度器交换了 goroutine A 和 goroutine B。由于 goroutine A 并没有完成工作，因此被放回到运行队列。之后，在第 3 步，goroutine B 完成了它的工作并被系统销毁。这也让 goroutine A 继续之前的工作。</p>
 <p>和其他函数调用一样，创建为 goroutine 的函数调用时可以传入参数。不过 goroutine 终止时无法获取函数的返回值。</p>
 <p>Go 标准库的 runtime 包里有一个名为 GOMAXPROCS 的函数，通过它可以指定调度器可用的逻辑处理器的数量。用这个函数，可以给每个可用的物理处理器在运行的时候分配一个逻辑处理器。</p>
@@ -1164,41 +1129,138 @@ panic: runtime error: assignment to entry in nil map
 </span></span><span class="line"><span class="cl"><span class="c1">// 给每个可用的核心分配一个逻辑处理器
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">runtime</span><span class="p">.</span><span class="nf">GOMAXPROCS</span><span class="p">(</span><span class="nx">runtime</span><span class="p">.</span><span class="nf">NumCPU</span><span class="p">())</span>
 </span></span></code></pre></div><p>包 runtime 提供了修改 Go 语言运行时配置参数的能力。上述代码我们使用两个 runtime 包的函数来修改调度器使用的逻辑处理器的数量。函数 NumCPU 返回可以使用的物理处理器的数量。因此，调用 GOMAXPROCS 函数就为每个可用的物理处理器创建一个逻辑处理器。需要强调的是，使用多个逻辑处理器并不意味着性能更好。在修改任何语言运行时配置参数的时候，都需要配合基准测试来评估程序的运行效果。</p>
-</div><div class="post-footer" id="post-footer">
-  <div class="post-info">
-    <div class="post-info-line">
-      <div class="post-info-mod">
-        <span title=2023-03-19&#32;20:04:52>Updated on 2023-03-19</span>
-      </div>
-      <div class="post-info-license "></div>
-    </div>
-    <div class="post-info-line">
-      <div class="post-info-md"></div>
-      <div class="post-info-share">
-        <span></span>
-      </div>
-    </div>
-  </div>
 
-  <div class="post-info-more">
-    <section class="post-tags"></section>
-    <section>
-      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 Ther 的博客
     </section>
-  </div>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
 
-  <div class="post-nav"><a href="/posts/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1/" class="prev" rel="prev" title="定时任务框架设计"><i class="fa-solid fa-angle-left fa-fw"></i>定时任务框架设计</a>
-      <a href="/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0/" class="next" rel="next" title="消息队列知识笔记">消息队列知识笔记<i class="fa-solid fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></main><footer class="footer">
-    <div class="footer-container"><div class="footer-line powered">Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer" title="Hugo 0.115.4">Hugo</a> | Theme - <a href="https://github.com/Lruihao/FixIt" target="_blank" rel="external nofollow noopener noreffer" title="FixIt v0.2.15-RC"><img class="fixit-icon" src="/images/fixit.svg" alt="FixIt logo" />&nbsp;FixIt</a>
-        </div></div>
-  </footer></div><div class="widgets">
-  <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
-      <i class="fa-solid fa-arrow-up fa-fw"></i>
-    </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
-      <i class="fa-solid fa-comment fa-fw"></i>
-    </a>
-  </div><div id="mask"></div>
-</div><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js" async defer></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{},"enablePWA":null};</script><script type="text/javascript" src="/js/theme.min.js" defer></script></body>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
 </html>
