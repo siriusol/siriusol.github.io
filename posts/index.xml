@@ -17,7 +17,7 @@
 &lt;h2 id=&#34;web-坐标轴&#34;&gt;Web 坐标轴&lt;/h2&gt;
 &lt;p&gt;坐标轴不只是存在于数学中，它同样存在于 Web 世界中。在 Web 中，我们常称之为 &lt;strong&gt;Web&lt;/strong&gt; &lt;strong&gt;坐标轴&lt;/strong&gt; 或 &lt;strong&gt;CSS&lt;/strong&gt; &lt;strong&gt;坐标系统&lt;/strong&gt; 。&lt;/p&gt;
 &lt;p&gt;在 Web 中，默认原点是给定上下文的左上角，也就是元素盒子的左上角，它分为 &lt;code&gt;x&lt;/code&gt; 轴（也称为水平轴），向右为正值，向左为负值；&lt;code&gt;y&lt;/code&gt; 轴（垂直轴），向上为负值，向下为正值：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cdeb002f45ad4a188983e435151b3967~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/gLY8d46vxbTsE1H.jpg&#34;
 	
 	
 	
@@ -31,7 +31,7 @@
 &lt;p&gt;请注意，这与大多数数学模型不同，其中原点位于&lt;em&gt;左下角&lt;/em&gt;，正 &lt;code&gt;y&lt;/code&gt; 坐标值位于原点上方。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;事实上，除了大家熟悉的平面画布中的 &lt;code&gt;x&lt;/code&gt; 和 &lt;code&gt;y&lt;/code&gt; 轴之外，还有控制第三维度的 &lt;code&gt;z&lt;/code&gt; 轴。比如使用 CSS 的 &lt;code&gt;transform&lt;/code&gt; 绘制 3D 图形或使用第三维度从前往后对对象进行分层：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1de13af895c64954acec35c282505e8f~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/Ny5LuUeDQrHkRoX.jpg&#34;
 	
 	
 	
@@ -42,7 +42,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;也会在定位元素（显式使用&lt;code&gt;position&lt;/code&gt; 属性值为非 &lt;code&gt;static&lt;/code&gt; 的元素）上使用 &lt;code&gt;z-index&lt;/code&gt; 控制其层叠的顺序（&lt;code&gt;z&lt;/code&gt; 轴上的层叠顺序），它表示的是用户与屏幕的这条看不见的垂直线：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/25f58e85cf3545a69a4b7e0da0b3dde1~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/ILYnV51ElOouaNA.jpg&#34;
 	
 	
 	
@@ -54,7 +54,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;上面我们看到的 CSS 坐标系，只是最初的坐标系的定义。随着 CSS 的逻辑属性出现，CSS 的坐标系也随之改变。它分为 &lt;strong&gt;内联轴&lt;/strong&gt; （Inline Axis）和 &lt;strong&gt;块轴&lt;/strong&gt; （Block Axis）。&lt;/p&gt;
 &lt;p&gt;众所周知，在 CSS 中，每个元素都是一个盒子，默认情况之下，盒子会根据元素类型分为块盒子（比如块元素 &lt;code&gt;div&lt;/code&gt; ）和 内联盒子（比如&lt;code&gt;span&lt;/code&gt;）。其中块盒会在垂直方向从上往下堆叠，内联盒子将会按照书写方式从左往右排列：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/52c710846e504b5390bda406de0149b9~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/GKz6MRdTHsWC9kc.jpg&#34;
 	
 	
 	
@@ -65,7 +65,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;当我们的书写方式改变时，块盒子和内联盒子也会有相应的变化，就拿内联盒子为例，书写模式改变之后，它的方向也会随之改变：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1fa96422579f4ebba966a04a3046c860~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/hy8b6zAWXkEnYCQ.jpg&#34;
 	
 	
 	
@@ -76,7 +76,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;简而言之，&lt;strong&gt;块元素遵循流方向，内联元素遵循写入方向&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d46de45a34cb4982a4512afd9e8de5c8~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/ZIskyAjaeUFYq8d.jpg&#34;
 	
 	
 	
@@ -87,7 +87,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;也就是说，随着 CSS 的逻辑属性的出现，CSS 的坐标系就不再以 &lt;code&gt;x&lt;/code&gt; 轴 和 &lt;code&gt;y&lt;/code&gt; 轴来定义，而是以 &lt;strong&gt;内联&lt;/strong&gt; （Inline）和 &lt;strong&gt;块&lt;/strong&gt; （Block）来区分，并且内联方向的称之为 &lt;strong&gt;内联轴&lt;/strong&gt; （Inline Axis），也就是书写模式的方向；块方向的称之为 &lt;strong&gt;块轴&lt;/strong&gt; （Block Axis），也就是块盒子自然流的方向。它们随着 CSS 的书写模式改变，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/29035d923f5341289fb3c0527dca42d4~tplv-k3u1fbpfcp-watermark.image?&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/U3jaCf6ytqu4Nhp.jpg&#34;
 	
 	
 	
@@ -143,7 +143,7 @@
 &lt;li&gt;&lt;code&gt;grid&lt;/code&gt; 或 &lt;code&gt;inline-grid&lt;/code&gt; 时称为 Grid 容器（网格容器）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;每个容器就像生活中的器皿一样，不管是什么类型的容器，它都有空间。只不过这个空间的大小是由 CSS 盒模型相关的属性来决定的：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac2e7f9fb85644bba2eb64740984ea60~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/nu2jQlNk6ZbeqOV.png&#34;
 	
 	
 	
@@ -154,7 +154,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;只不过，Web 开发者习惯性以 &lt;code&gt;width&lt;/code&gt; 、&lt;code&gt;height&lt;/code&gt; 、 &lt;code&gt;min-*&lt;/code&gt; 或 &lt;code&gt;max-*&lt;/code&gt; 以及它们对应的逻辑属性来显式指定一个容器空间的大小：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1f03b42bd971488db2132556d5b7102b~tplv-k3u1fbpfcp-watermark.image?&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/jn2XmQkz6pM5VgE.png&#34;
 	
 	
 	
@@ -165,7 +165,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;而且容器大小计算方式也会受 CSS 的 &lt;code&gt;box-sizing&lt;/code&gt; 属性的值影响：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4c37c1f5cce489a81ce5e56521dc128~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/cXIn1JupesN6q3h.jpg&#34;
 	
 	
 	
@@ -177,7 +177,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;每个容器中都有可能会放置内容（文本内容或其他元素），随着容器中放置的内容多少，可能会造成指定大小的容器无法容纳嵌套的内容，造成内容溢出（超出指定容器的大小）；也有可能放置的内容较少，无法填充满整个容器。&lt;/p&gt;
 &lt;p&gt;按此呈现模式，每个容器的大小（空间）又有&lt;strong&gt;可用空间&lt;/strong&gt; （也称为 &lt;strong&gt;剩余空间&lt;/strong&gt; ）和 &lt;strong&gt;不可用空间&lt;/strong&gt; （也称为 &lt;strong&gt;不足空间&lt;/strong&gt; ）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9be439c2389c4c03afdb1b6d26e8a249~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/K5YAwU6gtBhNv7C.jpg&#34;
 	
 	
 	
@@ -189,7 +189,7 @@
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;间距&#34;&gt;间距&lt;/h2&gt;
 &lt;p&gt;Web 是由很多个元素堆叠而成的，为了让 Web 页面给用户提供更好的体验，Web 设计师在设计时，会根据美学相关的理论来设计元素与元素之间，元素内容与元素盒子边缘之间的间距：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3f0042bf96b940c3a29b1adb7c6210d2~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/mBb69vWgfP2JViT.jpg&#34;
 	
 	
 	
@@ -208,7 +208,7 @@
 &lt;li&gt;内容与框的边缘（元素内容与元素框边缘）之间的间距一般采用 &lt;code&gt;padding&lt;/code&gt; 来设置，也常称为 &lt;strong&gt;内距&lt;/strong&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b6d6adba3fbb47aaaf154bebf4e3f770~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/ICbxNsp8cvoVUKH.jpg&#34;
 	
 	
 	
@@ -219,7 +219,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;特别要提出来的是，CSS 中的 &lt;code&gt;margin&lt;/code&gt; 和 &lt;code&gt;gap&lt;/code&gt; 表现形式是有较大差异的，它们之间的差异用下图来阐述：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0ffbb85f59be433d921d03a031188398~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/DxOWbQIRYVB8Tda.jpg&#34;
 	
 	
 	
@@ -232,7 +232,7 @@
 &lt;h2 id=&#34;书写模式&#34;&gt;书写模式&lt;/h2&gt;
 &lt;p&gt;世界上有很多种语言（简称&lt;a class=&#34;link&#34; href=&#34;https://zh.wikipedia.org/wiki/%E4%B8%96%E7%95%8C%E8%AA%9E%E8%A8%80&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;世界语言&lt;/a&gt;），比如汉语、英语、印度斯坦语、西班牙语、阿拉伯语、俄语、葡萄牙语、德语和法语等。在互联中也有一些常用语言，比如英语、汉语、西班牙语、葡萄牙语、印尼语（马来语）、法语、日语、俄语和德语等。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/eb0c5f7661b94655a798afc7b22169c2~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/pLHVGUQlgoqehwO.png&#34;
 	
 	
 	
@@ -255,7 +255,7 @@
 &lt;li&gt;&lt;strong&gt;汉语体系&lt;/strong&gt; 有两种方式，有可能是从左往右，也有从上向往下，比如中文、日文、韩文等。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;正因为语言的书写方式不同，在 Web 中呈现不同语系时，CSS 中的块（Block）和 内联（Inline）表现的方式也会不同。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d7aa755e28f84cc795fd21245db2609d~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/DWCFiMxNAc2pjRy.jpg&#34;
 	
 	
 	
@@ -266,7 +266,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;在 Web 布局中，尤其是针对多语言的 Web 布局，我们可以通过 HTML 元素的 &lt;code&gt;dir&lt;/code&gt; 属性或 CSS 的 &lt;code&gt;direction&lt;/code&gt; 属性来控制书写模式，比如 &lt;code&gt;ltr&lt;/code&gt; （Left-To-Right，也就是从左往右的书写方式），&lt;code&gt;rtl&lt;/code&gt; （Right-To-Left，也就是从右往左的书写方式）。除此之外，还可以使用 CSS 的 &lt;code&gt;writing-mode&lt;/code&gt; 属性来控制：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fe03b3367a9d4aba91f4c1e49b8415d9~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/Ictp5gBKswfC9ju.png&#34;
 	
 	
 	
@@ -279,7 +279,7 @@
 &lt;p&gt;正因为语系不同书写模式不同，也将造成 CSS 中布局相关属性最终呈现给用户的效果有所差异，比如 Flexbox 中的 &lt;code&gt;flex-direction&lt;/code&gt; 属性，CSS Box Alignment 模块中的属性以及 Grid 布局等。&lt;/p&gt;
 &lt;h2 id=&#34;逻辑属性&#34;&gt;逻辑属性&lt;/h2&gt;
 &lt;p&gt;我们构建的 Web 页面不仅是局限于单语种中，你负责的业务有可能是国际业务。这样一来，你构建的 Web 页面是一个多语种的 Web 页面，那么你的布局会因为语种不同有所差异。比如 Facebook 的登录页面：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c2a1d5e7540249699d91e3f19fe73b0f~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/TrE1lH5wquXV7MF.png&#34;
 	
 	
 	
@@ -293,7 +293,7 @@
 &lt;p&gt;上图中左侧是汉语体系的布局效果，右侧是阿拉伯语体系的布局效果。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;众所周知，CSS 中有很多属性和值是遵循 &lt;strong&gt;TRBL&lt;/strong&gt; (Top、Right、Bottom 和 Left ) 模式的：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2f128a6f27e746548793726ac7c0f1be~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/Nd4X63MTjDvqhfc.jpg&#34;
 	
 	
 	
@@ -308,7 +308,7 @@
     margin-right: 1rem;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在&lt;code&gt;ltr&lt;/code&gt; 模式（比如英文）和 &lt;code&gt;rtl&lt;/code&gt; 模式（比如阿拉伯文），效果将会是像下图一样：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd102861221c42cca2f900a2aad60c34~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/xVI9F4AmnrSekas.jpg&#34;
 	
 	
 	
@@ -326,7 +326,7 @@
 [dir=&amp;#34;rtl&amp;#34;] .thumb {
     margin-left: 1rem;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ea763a01c628466f8cdf938c72117d0b~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/BzreVQl2JkdhmFN.jpg&#34;
 	
 	
 	
@@ -340,7 +340,7 @@
     &gt;CSS逻辑属性和值&lt;/a&gt;（CSS Logical Properties and Values Level 1） 的首份工作草案（First Public Working Draft）。&lt;/p&gt;
 &lt;p&gt;在这个模块中并没有方向性的概念，只有开始（&lt;code&gt;start&lt;/code&gt; ）、结束（&lt;code&gt;end&lt;/code&gt;）、块（&lt;code&gt;block&lt;/code&gt;）和 内联（&lt;code&gt;inline&lt;/code&gt; ）的概念。这样一来，在从左到右的（&lt;code&gt;ltr&lt;/code&gt;）中，&lt;code&gt;start&lt;/code&gt; 对应的是 &lt;code&gt;left&lt;/code&gt; ，但在从右到左（&lt;code&gt;rtl&lt;/code&gt;）中，&lt;code&gt;start&lt;/code&gt; 对应的是 &lt;code&gt;right&lt;/code&gt; 。也就是说，逻辑属性更易于适应不同的书写模式。&lt;/p&gt;
 &lt;p&gt;当然，逻辑属性出现之后，很多 CSS 属性和属性值也随之有了变化，在原有的物理属性的基础上映射了一份逻辑属性。尤其是 CSS 的盒模型相关的属性（比如 &lt;code&gt;width&lt;/code&gt;、&lt;code&gt;height&lt;/code&gt; 、&lt;code&gt;min-*&lt;/code&gt; 、&lt;code&gt;max-*&lt;/code&gt; 、&lt;code&gt;border&lt;/code&gt; 、&lt;code&gt;margin&lt;/code&gt; 、&lt;code&gt;padding&lt;/code&gt;）、定位位移相关的属性（比如 &lt;code&gt;top&lt;/code&gt; 、&lt;code&gt;right&lt;/code&gt; 、&lt;code&gt;bottom&lt;/code&gt; 和 &lt;code&gt;left&lt;/code&gt;）、排版方面的（比如&lt;code&gt;float&lt;/code&gt; 属性的值 &lt;code&gt;left&lt;/code&gt; 和 &lt;code&gt;right&lt;/code&gt;）以及圆角 &lt;code&gt;border-radius&lt;/code&gt; 等：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/561d5783ec354850ae689d61e86ab6fb~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/2OxfvVMNuygrZ9d.png&#34;
 	
 	
 	
@@ -351,7 +351,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;而且映射关系与 CSS 的 &lt;code&gt;writing-mode&lt;/code&gt; 属性值也有关系，对应关系如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e171d25a3145466bb16a812e4af3bd2c~tplv-k3u1fbpfcp-watermark.image?&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/hM53Gy7Jcg6oRPt.png&#34;
 	
 	
 	
@@ -365,7 +365,7 @@
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;.thumb {
     margin-inline-end: 1rem;
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ee89006d8eb946a2b9bf5cc24c88752b~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/kcSuMVt5vT3Eal4.jpg&#34;
 	
 	
 	
@@ -385,7 +385,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;CSS Box Alignment 模块是 Web 布局不可或缺的部分，而且其中有很多概念是极易于混淆的。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d194cbe7fc845f8be3a6671cfa7fad5~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/vjbsAFViyuPO2wC.png&#34;
 	
 	
 	
@@ -396,7 +396,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;CSS Box Alignment 模块中，取不同的值时，能得到不同的对齐结果，比如靠左（开始）、靠右（结束）、中间对齐、两端对齐等：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a964cea745874ab18339f42497116af9~tplv-k3u1fbpfcp-zoom-1.image&#34;
+&lt;p&gt;&lt;img src=&#34;https://s2.loli.net/2025/01/01/jZ1lT9GAgw6ORCW.jpg&#34;
 	
 	
 	
